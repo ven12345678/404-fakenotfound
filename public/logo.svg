@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="800" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background square -->
+  <rect width="800" height="800" fill="#F5F5F5"/>
+  
+  <!-- 404 with magnifying glass -->
+  <g transform="translate(200, 300)">
+    <!-- 40 text -->
+    <text x="0" y="0" font-size="120" fill="#051C2C" font-weight="bold" font-family="Arial, sans-serif">
+      40
+    </text>
+    
+    <!-- Magnifying glass as 4 -->
+    <g transform="translate(160, -20)">
+      <circle cx="40" cy="40" r="35" stroke="#051C2C" stroke-width="20" fill="none"/>
+      <line x1="65" y1="65" x2="100" y2="100" stroke="#051C2C" stroke-width="20" stroke-linecap="round"/>
+      <!-- Document with X inside magnifying glass -->
+      <rect x="25" y="25" width="30" height="30" fill="none" stroke="#051C2C" stroke-width="4"/>
+      <line x1="30" y1="30" x2="50" y2="50" stroke="#FF0000" stroke-width="4" stroke-linecap="round"/>
+      <line x1="50" y1="30" x2="30" y2="50" stroke="#FF0000" stroke-width="4" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <!-- Text below -->
+  <g transform="translate(200, 450)">
+    <text font-family="Arial, sans-serif" font-weight="bold">
+      <tspan x="0" y="0" font-size="80" fill="#FF0000" letter-spacing="10">
+        FAKE
+      </tspan>
+      <tspan x="0" y="100" font-size="80" fill="#051C2C" letter-spacing="5">
+        NOT FOUND
+      </tspan>
+    </text>
+  </g>
+</svg> 
