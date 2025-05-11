@@ -73,35 +73,43 @@ export default function Leaderboard() {
         <h1 className="text-4xl font-bold text-center text-gray-800 mb-8 flex items-center justify-center gap-2">
           <FiTrendingUp className="text-cyan-600" /> View Rankings
         </h1>
-        <div className="bg-white rounded-xl shadow-md p-6">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="border-b">
-                <th className="py-2 px-2">Rank</th>
-                <th className="py-2 px-2">Name</th>
-                <th className="py-2 px-2">Level</th>
-                <th className="py-2 px-2">Tokens</th>
-                <th className="py-2 px-2">Earnings</th>
-                <th className="py-2 px-2">Streak</th>
-              </tr>
-            </thead>
-            <tbody>
-              {leaderboardData.map((user) => (
-                <tr key={user.rank} className="border-b hover:bg-gray-50">
-                  <td className="py-2 px-2 font-bold flex items-center gap-2">
+        <div className="bg-white rounded-xl shadow-md p-6 w-full max-w-full">
+          <div className="flex flex-col gap-6 w-full">
+            {/* Header Row */}
+            <div className="grid grid-cols-6 gap-4 pb-2 border-b font-semibold text-gray-700 text-lg w-full">
+              <div>Rank</div>
+              <div>Name</div>
+              <div>Level</div>
+              <div>Tokens</div>
+              <div>Earnings</div>
+              <div className="text-right">Streak</div>
+            </div>
+            {/* User Rows */}
+            {leaderboardData.map((user) => (
+              <div key={user.rank} className="border-b pb-4 mb-4 w-full">
+                <div className="grid grid-cols-6 gap-4 items-center w-full">
+                  <div>
                     <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-cyan-100 text-cyan-700 font-bold">
                       {user.rank}
                     </span>
-                  </td>
-                  <td className="py-2 px-2">{user.name}</td>
-                  <td className="py-2 px-2 flex items-center gap-1"><FiAward className="text-yellow-500" /> {user.level}</td>
-                  <td className="py-2 px-2 flex items-center gap-1"><FiCheckCircle className="text-green-500" /> {user.tokens}</td>
-                  <td className="py-2 px-2 flex items-center gap-1"><FiDollarSign className="text-blue-500" /> ${user.earnings}</td>
-                  <td className="py-2 px-2 flex items-center gap-1"><FiClock className="text-red-500" /> {user.streak} days</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </div>
+                  <div className="font-medium text-gray-900">{user.name}</div>
+                  <div className="flex flex-col items-start">
+                    <span className="flex items-center gap-1 text-yellow-600 font-semibold"><FiAward /> {user.level}</span>
+                  </div>
+                  <div className="flex flex-col items-start">
+                    <span className="flex items-center gap-1 text-green-600 font-semibold"><FiCheckCircle /> {user.tokens}</span>
+                  </div>
+                  <div className="flex flex-col items-start">
+                    <span className="flex items-center gap-1 text-blue-600 font-semibold"><FiDollarSign /> ${user.earnings}</span>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <span className="flex items-center gap-1 text-red-600 font-semibold"><FiClock /> {user.streak} days</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
