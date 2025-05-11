@@ -22,7 +22,7 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <button
-                onClick={() => router.push('/verify')}
+                onClick={() => router.push('/news-feed')}
                 className="inline-flex items-center px-8 py-4 rounded-lg text-lg font-medium text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transition-all shadow-sm"
               >
                 <FiSearch className="w-6 h-6 mr-2" />
@@ -42,6 +42,8 @@ export default function Home() {
 
       {/* Features Section */}
       <div className="bg-white py-24">
+        {/* Subheader: What can you do */}
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">What can you do</h2>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-white rounded-xl p-8 border border-gray-200 hover:border-cyan-200 hover:shadow-lg transition-all">
@@ -79,6 +81,8 @@ export default function Home() {
 
       {/* Stats Section */}
       <div className="bg-cyan-50">
+        {/* Subheader: More about us */}
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">More about us</h2>
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="text-center p-4 bg-white rounded-lg shadow-sm">

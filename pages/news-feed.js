@@ -117,6 +117,22 @@ const sampleNews = [
     stockChange: 2.1,
     stockMovement: "up",
     tags: ["Health", "Nutrition", "Research", "Longevity", "Diet"]
+  },
+  {
+    id: 7,
+    title: "Malaysia Unlikely to Escape Trump Tariffs, Says Former US Trade Negotiator",
+    summary: "A former US trade negotiator, Stephen Olson, states that Malaysia is unlikely to fully eliminate the 24% tariff imposed by US President Donald Trump on most Malaysian goods. Despite ongoing negotiations and Malaysia's efforts to highlight its investments in the US, Olson believes Malaysia has limited leverage and that Trump is unlikely to be swayed by threats of retaliation. The US remains Malaysia's third largest trading partner, and the tariffs, currently paused for 90 days, are part of broader US trade actions. Read more at the source.",
+    source: "Free Malaysia Today",
+    author: "Jason Thomas",
+    publishDate: "2025-05-09",
+    category: "World",
+    aiVerified: true,
+    userVerified: false,
+    aiFlagged: false,
+    factualRating: 90,
+    biasRating: 20,
+    tags: ["Malaysia", "US", "Tariffs", "Trade", "Donald Trump"],
+    link: "https://www.freemalaysiatoday.com/category/nation/2025/05/09/malaysia-unlikely-to-escape-trump-tariffs-says-former-us-trade-negotiator"
   }
 ];
 
@@ -201,18 +217,7 @@ export default function NewsFeed() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-md">
-        <div className="container mx-auto px-4 py-6">
-          <h1 className="text-4xl font-bold text-center text-gray-800">
-            404 Fake Not Found
-          </h1>
-          <p className="text-center text-gray-600 mt-2">
-            Your trusted source for verified news and information
-          </p>
-        </div>
-      </header>
-
+      {/* Header removed */}
       <div className="container mx-auto px-4 py-8">
         <SearchFilter
           onSearch={handleSearch}
