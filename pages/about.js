@@ -3,16 +3,32 @@ import { FiSettings } from 'react-icons/fi';
 
 const AboutPage = () => {
   return (
-    <div className="flex-grow bg-[#1a2942] min-h-screen text-white p-8">
+    <div className="flex-grow bg-gray-50 min-h-screen text-gray-900">
+      {/* Navigation */}
+      <nav className="bg-white shadow-sm mb-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center">
+              <button
+                onClick={() => window.location.href = '/'}
+                className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none transition-colors"
+              >
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><path d="M15 19l-7-7 7-7" /></svg>
+                Back to Home
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
       {/* Main Content Container */}
-      <div className="max-w-6xl mx-auto relative">
+      <div className="max-w-6xl mx-auto relative p-8">
         {/* Decorative Elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl -z-0"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl -z-0"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-200/20 rounded-full blur-3xl -z-0"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-cyan-200/20 rounded-full blur-3xl -z-0"></div>
 
         {/* Title Section */}
         <div className="relative z-10 mb-12">
-          <h1 className="text-5xl font-bold text-[#4d8bff] mb-4 flex items-center gap-4">
+          <h1 className="text-5xl font-bold text-blue-600 mb-4 flex items-center gap-4">
             Verify, Earn, Transform News
             <BsCoin className="text-yellow-400 inline-block" size={40} />
           </h1>
@@ -27,21 +43,21 @@ const AboutPage = () => {
               <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[#4d8bff] text-white font-bold">
                 1
               </div>
-              <p className="text-gray-200">Participate with crypto deposits to verify trending news content.</p>
+              <p className="text-gray-700">Participate with crypto deposits to verify trending news content.</p>
             </div>
 
             <div className="flex items-center gap-4 text-xl">
               <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[#4d8bff] text-white font-bold">
                 2
               </div>
-              <p className="text-gray-200">Get incentives for accurate fact-checking.</p>
+              <p className="text-gray-700">Get incentives for accurate fact-checking.</p>
             </div>
 
             <div className="flex items-center gap-4 text-xl">
               <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[#4d8bff] text-white font-bold">
                 3
               </div>
-              <p className="text-gray-200">Withdraw deposits and grow your verification authority.</p>
+              <p className="text-gray-700">Withdraw deposits and grow your verification authority.</p>
             </div>
           </div>
 
@@ -79,7 +95,7 @@ const AboutPage = () => {
         {/* Platform Features Section */}
         <div className="relative z-10">
           <div className="flex items-center gap-4 mb-12">
-            <h2 className="text-3xl font-bold text-[#4d8bff]">Platform Features</h2>
+            <h2 className="text-3xl font-bold text-blue-600">Platform Features</h2>
             <div className="flex gap-2">
               <FiSettings className="animate-spin text-[#4d8bff]" size={28} />
               <FiSettings className="animate-spin-slow text-cyan-400" size={24} />
@@ -88,40 +104,40 @@ const AboutPage = () => {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-            <div className="bg-[#243757] p-6 rounded-xl hover:bg-[#2a4165] transition-all duration-300 group">
-              <h3 className="text-lg font-semibold mb-2 group-hover:text-[#4d8bff]">Share News</h3>
-              <p className="text-gray-400 text-sm">Submit news articles for the community to verify</p>
-              <div className="h-1 w-12 bg-[#4d8bff] group-hover:w-full transition-all duration-300"></div>
+            <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 group">
+              <h3 className="text-lg font-semibold mb-2 group-hover:text-blue-600">Share News</h3>
+              <p className="text-gray-600 text-sm">Submit news articles for the community to verify</p>
+              <div className="h-1 w-12 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
             </div>
 
-            <div className="bg-[#243757] p-6 rounded-xl hover:bg-[#2a4165] transition-all duration-300 group">
-              <h3 className="text-lg font-semibold mb-2 group-hover:text-[#4d8bff]">Verify & Earn</h3>
-              <p className="text-gray-400 text-sm">Check facts and earn rewards for accurate verification</p>
-              <div className="h-1 w-12 bg-[#4d8bff] group-hover:w-full transition-all duration-300"></div>
+            <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 group">
+              <h3 className="text-lg font-semibold mb-2 group-hover:text-blue-600">Verify & Earn</h3>
+              <p className="text-gray-600 text-sm">Check facts and earn rewards for accurate verification</p>
+              <div className="h-1 w-12 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
             </div>
 
-            <div className="bg-[#243757] p-6 rounded-xl hover:bg-[#2a4165] transition-all duration-300 group">
-              <h3 className="text-lg font-semibold mb-2 group-hover:text-[#4d8bff]">Community Vote</h3>
-              <p className="text-gray-400 text-sm">Join others to decide if news is real or fake</p>
-              <div className="h-1 w-12 bg-[#4d8bff] group-hover:w-full transition-all duration-300"></div>
+            <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 group">
+              <h3 className="text-lg font-semibold mb-2 group-hover:text-blue-600">Community Vote</h3>
+              <p className="text-gray-600 text-sm">Join others to decide if news is real or fake</p>
+              <div className="h-1 w-12 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
             </div>
 
-            <div className="bg-[#243757] p-6 rounded-xl hover:bg-[#2a4165] transition-all duration-300 group">
-              <h3 className="text-lg font-semibold mb-2 group-hover:text-[#4d8bff]">Reputation Score</h3>
-              <p className="text-gray-400 text-sm">Build your credibility through accurate verifications</p>
-              <div className="h-1 w-12 bg-[#4d8bff] group-hover:w-full transition-all duration-300"></div>
+            <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 group">
+              <h3 className="text-lg font-semibold mb-2 group-hover:text-blue-600">Reputation Score</h3>
+              <p className="text-gray-600 text-sm">Build your credibility through accurate verifications</p>
+              <div className="h-1 w-12 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
             </div>
 
-            <div className="bg-[#243757] p-6 rounded-xl hover:bg-[#2a4165] transition-all duration-300 group">
-              <h3 className="text-lg font-semibold mb-2 group-hover:text-[#4d8bff]">Community Watch</h3>
-              <p className="text-gray-400 text-sm">Help monitor and maintain quality verifications</p>
-              <div className="h-1 w-12 bg-[#4d8bff] group-hover:w-full transition-all duration-300"></div>
+            <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 group">
+              <h3 className="text-lg font-semibold mb-2 group-hover:text-blue-600">Community Watch</h3>
+              <p className="text-gray-600 text-sm">Help monitor and maintain quality verifications</p>
+              <div className="h-1 w-12 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
             </div>
 
-            <div className="bg-[#243757] p-6 rounded-xl hover:bg-[#2a4165] transition-all duration-300 group">
-              <h3 className="text-lg font-semibold mb-2 group-hover:text-[#4d8bff]">Rewards System</h3>
-              <p className="text-gray-400 text-sm">Get tokens and bonuses for your contributions</p>
-              <div className="h-1 w-12 bg-[#4d8bff] group-hover:w-full transition-all duration-300"></div>
+            <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 group">
+              <h3 className="text-lg font-semibold mb-2 group-hover:text-blue-600">Rewards System</h3>
+              <p className="text-gray-600 text-sm">Get tokens and bonuses for your contributions</p>
+              <div className="h-1 w-12 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
             </div>
           </div>
         </div>

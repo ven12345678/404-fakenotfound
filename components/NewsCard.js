@@ -31,15 +31,15 @@ const NewsCard = ({
 
   const handleVerify = () => {
     if (!isFlagged) {
-      setIsVerified(!isVerified);
-      onVerify && onVerify(!isVerified);
+    setIsVerified(!isVerified);
+    onVerify && onVerify(!isVerified);
     }
   };
 
   const handleFlag = () => {
     if (!isVerified) {
-      setIsFlagged(!isFlagged);
-      onFlag && onFlag(!isFlagged);
+    setIsFlagged(!isFlagged);
+    onFlag && onFlag(!isFlagged);
     }
   };
 
@@ -71,141 +71,141 @@ The US remains Malaysia's third largest trading partner, and the tariffs, curren
   title === "Malaysia Unlikely to Escape Trump Tariffs, Says Former US Trade Negotiator"
       ? `https://www.freemalaysiatoday.com/category/nation/2025/05/09/malaysia-unlikely-to-escape-trump-tariffs-says-former-us-trade-negotiator`
       : "Original sources will appear here.";
-  
+
   return (
     <>
       <div
         className="bg-white rounded-lg shadow-md p-6 mb-4 hover:shadow-lg transition-shadow cursor-pointer"
         onClick={() => setShowModal(true)}
       >
-        <div className="flex flex-col">
-          {/* Title and Source */}
-          <div className="mb-4">
-            <h2 className="text-2xl font-bold mb-2">{title}</h2>
-            <div className="flex items-center gap-4 text-gray-600">
-              <p>Source: {source}</p>
-              <p>•</p>
-              <p>By {author}</p>
-              <p>•</p>
-              <p>Published: {publishDate}</p>
-              {lastUpdated && (
-                <>
-                  <p>•</p>
-                  <p>Updated: {lastUpdated}</p>
-                </>
-              )}
-            </div>
+      <div className="flex flex-col">
+        {/* Title and Source */}
+        <div className="mb-4">
+          <h2 className="text-2xl font-bold mb-2">{title}</h2>
+          <div className="flex items-center gap-4 text-gray-600">
+            <p>Source: {source}</p>
+            <p>•</p>
+            <p>By {author}</p>
+            <p>•</p>
+            <p>Published: {publishDate}</p>
+            {lastUpdated && (
+              <>
+                <p>•</p>
+                <p>Updated: {lastUpdated}</p>
+              </>
+            )}
           </div>
+        </div>
 
-          {/* Summary */}
-          <div className="mb-4">
+        {/* Summary */}
+        <div className="mb-4">
             <p className="text-gray-700">{summary} {link && (
               <a href={link} target="_blank" rel="noopener noreferrer" className="text-cyan-700 underline ml-2" onClick={e => e.stopPropagation()}>Read more</a>
             )}</p>
-          </div>
+        </div>
 
-          {/* Verification and Flagging */}
-          <div className="flex gap-4 mb-4">
-            <div className="flex gap-2">
-              {aiVerified && (
-                <span className="flex items-center gap-1 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                  <FaCheckCircle /> AI Verified
-                </span>
-              )}
-              {isVerified && (
-                <span className="flex items-center gap-1 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-                  <FaUserCheck /> User Verified
-                </span>
-              )}
-              {aiFlagged && (
-                <span className="flex items-center gap-1 bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
-                  <FaRobot /> AI Flagged: {aiFlagReason}
-                </span>
-              )}
-            </div>
-            <div className="flex gap-2">
-              <button
+        {/* Verification and Flagging */}
+        <div className="flex gap-4 mb-4">
+          <div className="flex gap-2">
+            {aiVerified && (
+              <span className="flex items-center gap-1 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                <FaCheckCircle /> AI Verified
+              </span>
+            )}
+            {isVerified && (
+              <span className="flex items-center gap-1 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+                <FaUserCheck /> User Verified
+              </span>
+            )}
+            {aiFlagged && (
+              <span className="flex items-center gap-1 bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
+                <FaRobot /> AI Flagged: {aiFlagReason}
+              </span>
+            )}
+          </div>
+          <div className="flex gap-2">
+            <button
                 onClick={e => { e.stopPropagation(); handleVerify(); }}
                 disabled={isFlagged}
                 className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm transition-colors
                   ${isVerified ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}
                   ${isFlagged ? 'opacity-50 cursor-not-allowed' : ''}`}
-              >
-                <FaThumbsUp /> {isVerified ? 'Verified' : 'Verify'}
-              </button>
-              <button
+            >
+              <FaThumbsUp /> {isVerified ? 'Verified' : 'Verify'}
+            </button>
+            <button
                 onClick={e => { e.stopPropagation(); handleFlag(); }}
                 disabled={isVerified}
                 className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm transition-colors
                   ${isFlagged ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'}
                   ${isVerified ? 'opacity-50 cursor-not-allowed' : ''}`}
-              >
-                <FaFlag /> {isFlagged ? 'Flagged' : 'Flag'}
-              </button>
+            >
+              <FaFlag /> {isFlagged ? 'Flagged' : 'Flag'}
+            </button>
+          </div>
+        </div>
+
+        {/* Category */}
+        <div className="mb-4">
+          <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">
+            {category}
+          </span>
+        </div>
+
+        {/* Ratings */}
+        <div className="flex gap-6 mb-4">
+          <div>
+            <span className="text-sm text-gray-600">Factual Rating:</span>
+            <div className="w-32 h-2 bg-gray-200 rounded-full mt-1">
+              <div 
+                className="h-full bg-green-500 rounded-full" 
+                style={{ width: `${factualRating}%` }}
+              />
             </div>
           </div>
+          <div>
+            <span className="text-sm text-gray-600">Bias Rating:</span>
+            <div className="w-32 h-2 bg-gray-200 rounded-full mt-1">
+              <div 
+                className="h-full bg-yellow-500 rounded-full" 
+                style={{ width: `${biasRating}%` }}
+              />
+            </div>
+          </div>
+        </div>
 
-          {/* Category */}
-          <div className="mb-4">
-            <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">
-              {category}
+        {/* Stock Information */}
+        {stockSymbol && (
+          <div className="bg-gray-50 p-3 rounded-lg mb-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="font-medium text-lg">{stockSymbol}</span>
+                <span className="ml-2 text-gray-600">${stockPrice}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                {stockMovement === 'up' ? (
+                  <FaArrowUp className="text-green-500" />
+                ) : (
+                  <FaArrowDown className="text-red-500" />
+                )}
+                <span className={stockMovement === 'up' ? 'text-green-500' : 'text-red-500'}>
+                  {stockChange}%
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tags */}
+        <div className="flex flex-wrap gap-2">
+          {tags.map((tag, index) => (
+            <span 
+              key={index}
+              className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm"
+            >
+              {tag}
             </span>
-          </div>
-
-          {/* Ratings */}
-          <div className="flex gap-6 mb-4">
-            <div>
-              <span className="text-sm text-gray-600">Factual Rating:</span>
-              <div className="w-32 h-2 bg-gray-200 rounded-full mt-1">
-                <div 
-                  className="h-full bg-green-500 rounded-full" 
-                  style={{ width: `${factualRating}%` }}
-                />
-              </div>
-            </div>
-            <div>
-              <span className="text-sm text-gray-600">Bias Rating:</span>
-              <div className="w-32 h-2 bg-gray-200 rounded-full mt-1">
-                <div 
-                  className="h-full bg-yellow-500 rounded-full" 
-                  style={{ width: `${biasRating}%` }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Stock Information */}
-          {stockSymbol && (
-            <div className="bg-gray-50 p-3 rounded-lg mb-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="font-medium text-lg">{stockSymbol}</span>
-                  <span className="ml-2 text-gray-600">${stockPrice}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  {stockMovement === 'up' ? (
-                    <FaArrowUp className="text-green-500" />
-                  ) : (
-                    <FaArrowDown className="text-red-500" />
-                  )}
-                  <span className={stockMovement === 'up' ? 'text-green-500' : 'text-red-500'}>
-                    {stockChange}%
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2">
-            {tags.map((tag, index) => (
-              <span 
-                key={index}
-                className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm"
-              >
-                {tag}
-              </span>
-            ))}
+          ))}
           </div>
 
           {/* Trading Insights */}
@@ -292,9 +292,9 @@ The US remains Malaysia's third largest trading partner, and the tariffs, curren
               {link && (
                 <a href={link} target="_blank" rel="noopener noreferrer" className="text-cyan-700 underline font-medium">Read the full article at the original source</a>
               )}
-            </div>
-          </div>
         </div>
+      </div>
+    </div>
       )}
     </>
   );

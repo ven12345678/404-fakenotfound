@@ -28,22 +28,30 @@ export default function Profile() {
   };
 
   return (
-    <div className={`${geist.className} min-h-screen bg-[#1e2530]`}>
+    <div className={`${geist.className} min-h-screen bg-gray-50`}>
       <div className="px-6 py-4">
-        <button
-          onClick={() => router.push('/')}
-          className="inline-flex items-center text-gray-300 hover:text-white"
-        >
-          <FiArrowLeft className="w-5 h-5 mr-2" />
-          Back to Home
-        </button>
+        <nav className="bg-white shadow-sm mb-4 -mx-6 -mt-4">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              <div className="flex items-center">
+                <button
+                  onClick={() => router.push('/')}
+                  className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none transition-colors"
+                >
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><path d="M15 19l-7-7 7-7" /></svg>
+                  Back to Home
+                </button>
+              </div>
+            </div>
+          </div>
+        </nav>
       </div>
 
       <div className="max-w-6xl mx-auto px-6">
-        <div className="bg-[#1a1f27] rounded-xl p-8 mb-8">
+        <div className="bg-white rounded-xl p-8 mb-8 border border-gray-200 shadow-md">
           <div className="flex items-center">
             <div className="relative">
-              <div className="w-24 h-24 bg-gradient-to-br from-[#4169e1] to-[#3151b0] rounded-full flex items-center justify-center text-2xl font-semibold text-white shadow-lg">
+              <div className="w-24 h-24 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-2xl font-semibold text-white shadow-lg">
                 J
               </div>
               <div className="absolute -bottom-1 -right-1 bg-green-500 rounded-full p-1.5 shadow-lg">
@@ -52,18 +60,18 @@ export default function Profile() {
             </div>
             <div className="ml-6 flex-grow">
               <div className="flex items-center gap-3 mb-1">
-                <h1 className="text-2xl font-bold text-white">John Doe</h1>
-                <span className="bg-blue-500/20 text-blue-400 px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                <h1 className="text-2xl font-bold text-gray-900">John Doe</h1>
+                <span className="bg-blue-500/20 text-blue-600 px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
                   <FiCheck className="w-3.5 h-3.5" />
                   Verified
                 </span>
               </div>
-              <p className="text-gray-400 text-sm mb-3">john@example.com</p>
+              <p className="text-gray-500 text-sm mb-3">john@example.com</p>
               <div className="flex items-center space-x-4">
-                <span className="bg-[#4169e1]/10 text-[#4169e1] px-3 py-1 rounded-full text-xs font-semibold">Truth Seeker</span>
-                <span className="text-gray-400 text-xs">Member since Jan 2024</span>
-                <span className="flex items-center text-xs text-emerald-400 font-medium">
-                  <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full mr-1.5"></span>
+                <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-semibold">Truth Seeker</span>
+                <span className="text-gray-500 text-xs">Member since Jan 2024</span>
+                <span className="flex items-center text-xs text-green-600 font-medium">
+                  <span className="w-1.5 h-1.5 bg-green-400 rounded-full mr-1.5"></span>
                   Active Member
                 </span>
               </div>
@@ -71,14 +79,14 @@ export default function Profile() {
             <div className="flex space-x-3">
               <button
                 onClick={handleEditProfile}
-                className="px-4 py-2 bg-[#4169e1]/10 text-[#4169e1] rounded-lg text-sm font-semibold hover:bg-[#4169e1]/20 transition-all flex items-center gap-2 shadow-sm"
+                className="px-4 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm font-semibold hover:bg-blue-200 transition-all flex items-center gap-2 shadow-sm"
               >
                 <FiEdit2 className="w-4 h-4" />
                 Edit Profile
               </button>
               <button
                 onClick={handleShare}
-                className="px-4 py-2 bg-gray-700/50 text-white rounded-lg text-sm font-semibold hover:bg-gray-700/70 transition-all flex items-center gap-2 shadow-sm"
+                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-200 transition-all flex items-center gap-2 shadow-sm"
               >
                 <FiShare2 className="w-4 h-4" />
                 Share
@@ -87,13 +95,13 @@ export default function Profile() {
           </div>
         </div>
 
-        <div className="flex space-x-8 border-b border-gray-700 mb-8">
+        <div className="flex space-x-8 border-b border-gray-200 mb-8">
           <button
             onClick={() => setActiveTab('overview')}
             className={`text-lg font-medium py-4 px-2 border-b-2 transition-colors ${
               activeTab === 'overview'
-                ? 'text-white border-[#4169e1]'
-                : 'text-gray-400 border-transparent hover:text-gray-300'
+                ? 'text-blue-600 border-blue-600'
+                : 'text-gray-500 border-transparent hover:text-gray-700'
             }`}
           >
             Overview
@@ -102,8 +110,8 @@ export default function Profile() {
             onClick={() => setActiveTab('activity')}
             className={`text-lg font-medium py-4 px-2 border-b-2 transition-colors ${
               activeTab === 'activity'
-                ? 'text-white border-[#4169e1]'
-                : 'text-gray-400 border-transparent hover:text-gray-300'
+                ? 'text-blue-600 border-blue-600'
+                : 'text-gray-500 border-transparent hover:text-gray-700'
             }`}
           >
             Activity
@@ -112,8 +120,8 @@ export default function Profile() {
             onClick={() => setActiveTab('achievements')}
             className={`text-lg font-medium py-4 px-2 border-b-2 transition-colors ${
               activeTab === 'achievements'
-                ? 'text-white border-[#4169e1]'
-                : 'text-gray-400 border-transparent hover:text-gray-300'
+                ? 'text-blue-600 border-blue-600'
+                : 'text-gray-500 border-transparent hover:text-gray-700'
             }`}
           >
             Achievements
@@ -122,8 +130,8 @@ export default function Profile() {
             onClick={() => setActiveTab('stats')}
             className={`text-lg font-medium py-4 px-2 border-b-2 transition-colors ${
               activeTab === 'stats'
-                ? 'text-white border-[#4169e1]'
-                : 'text-gray-400 border-transparent hover:text-gray-300'
+                ? 'text-blue-600 border-blue-600'
+                : 'text-gray-500 border-transparent hover:text-gray-700'
             }`}
           >
             Stats
@@ -132,59 +140,59 @@ export default function Profile() {
 
         {activeTab === 'overview' && (
           <div className="grid grid-cols-4 gap-6">
-            <div className="bg-[#1a1f27] p-6 rounded-xl">
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <p className="text-gray-400 text-sm font-medium mb-1">Level</p>
-                  <h3 className="text-4xl font-bold text-white">3</h3>
+                  <p className="text-gray-500 text-sm font-medium mb-1">Level</p>
+                  <h3 className="text-4xl font-bold text-gray-900">3</h3>
                 </div>
-                <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
                   <div className="w-3 h-3 rounded-full bg-blue-500"></div>
                 </div>
               </div>
-              <div className="w-full h-1 bg-[#151a21] rounded-full mb-3">
+              <div className="w-full h-1 bg-gray-200 rounded-full mb-3">
                 <div className="h-full w-3/4 bg-gradient-to-r from-blue-500 to-blue-400 rounded-full"></div>
               </div>
-              <p className="text-gray-400 text-sm">Next level in 25 verifications</p>
+              <p className="text-gray-500 text-sm">Next level in 25 verifications</p>
             </div>
 
-            <div className="bg-[#1a1f27] p-6 rounded-xl">
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <p className="text-gray-400 text-sm font-medium mb-1">Tokens</p>
-                  <h3 className="text-4xl font-bold text-white">150</h3>
+                  <p className="text-gray-500 text-sm font-medium mb-1">Tokens</p>
+                  <h3 className="text-4xl font-bold text-gray-900">150</h3>
                 </div>
-                <div className="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
                   <div className="w-3 h-3 rounded-full bg-purple-500"></div>
                 </div>
               </div>
-              <p className="text-green-400 text-sm font-medium">↗ +45 this week</p>
+              <p className="text-green-600 text-sm font-medium">↗ +45 this week</p>
             </div>
 
-            <div className="bg-[#1a1f27] p-6 rounded-xl">
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <p className="text-gray-400 text-sm font-medium mb-1">Earnings</p>
-                  <h3 className="text-4xl font-bold text-white">$500</h3>
+                  <p className="text-gray-500 text-sm font-medium mb-1">Earnings</p>
+                  <h3 className="text-4xl font-bold text-gray-900">$500</h3>
                 </div>
-                <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
                   <div className="w-3 h-3 rounded-full bg-green-500"></div>
                 </div>
               </div>
-              <p className="text-gray-400 text-sm">Total earned: $2,500</p>
+              <p className="text-gray-500 text-sm">Total earned: $2,500</p>
             </div>
 
-            <div className="bg-[#1a1f27] p-6 rounded-xl">
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <p className="text-gray-400 text-sm font-medium mb-1">Streak</p>
-                  <h3 className="text-4xl font-bold text-white">7 days</h3>
+                  <p className="text-gray-500 text-sm font-medium mb-1">Streak</p>
+                  <h3 className="text-4xl font-bold text-gray-900">7 days</h3>
                 </div>
-                <div className="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
                   <div className="w-3 h-3 rounded-full bg-red-500"></div>
                 </div>
               </div>
-              <p className="text-gray-400 text-sm">Keep it up! 3 days to new badge</p>
+              <p className="text-gray-500 text-sm">Keep it up! 3 days to new badge</p>
             </div>
           </div>
         )}
@@ -192,7 +200,7 @@ export default function Profile() {
         {activeTab === 'activity' && (
           <div className="mt-8">
             <div className="space-y-4">
-              <div className="bg-[#1a1f27] p-5 rounded-xl relative overflow-hidden hover:bg-[#1e2530] transition-all group">
+              <div className="bg-white p-5 rounded-xl border border-gray-200 relative overflow-hidden hover:shadow-lg transition-all group">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full -mr-16 -mt-16 group-hover:bg-blue-500/10 transition-all"></div>
                 <div className="relative flex items-center">
                   <div className="flex-shrink-0">
@@ -208,8 +216,8 @@ export default function Profile() {
                   <div className="ml-4 flex-grow">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h3 className="text-white font-medium">Verified a news article</h3>
-                        <p className="text-gray-400 text-sm mt-1">Earned 15 tokens for verification</p>
+                        <h3 className="text-black font-medium">Verified a news article</h3>
+                        <p className="text-gray-700 text-sm mt-1">Earned 15 tokens for verification</p>
                       </div>
                       <div className="flex items-center">
                         <span className="text-gray-400 text-sm">2 hours ago</span>
@@ -220,7 +228,7 @@ export default function Profile() {
                 </div>
               </div>
 
-              <div className="bg-[#1a1f27] p-5 rounded-xl relative overflow-hidden hover:bg-[#1e2530] transition-all group">
+              <div className="bg-white p-5 rounded-xl border border-gray-200 relative overflow-hidden hover:shadow-lg transition-all group">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/5 rounded-full -mr-16 -mt-16 group-hover:bg-green-500/10 transition-all"></div>
                 <div className="relative flex items-center">
                   <div className="flex-shrink-0">
@@ -235,8 +243,8 @@ export default function Profile() {
                   <div className="ml-4 flex-grow">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h3 className="text-white font-medium">Completed daily challenge</h3>
-                        <p className="text-gray-400 text-sm mt-1">Earned $50 reward and 25 tokens</p>
+                        <h3 className="text-black font-medium">Completed daily challenge</h3>
+                        <p className="text-gray-700 text-sm mt-1">Earned $50 reward and 25 tokens</p>
                       </div>
                       <div className="flex items-center">
                         <span className="text-gray-400 text-sm">5 hours ago</span>
@@ -247,7 +255,7 @@ export default function Profile() {
                 </div>
               </div>
 
-              <div className="bg-[#1a1f27] p-5 rounded-xl relative overflow-hidden hover:bg-[#1e2530] transition-all group">
+              <div className="bg-white p-5 rounded-xl border border-gray-200 relative overflow-hidden hover:shadow-lg transition-all group">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full -mr-16 -mt-16 group-hover:bg-purple-500/10 transition-all"></div>
                 <div className="relative flex items-center">
                   <div className="flex-shrink-0">
@@ -262,8 +270,8 @@ export default function Profile() {
                   <div className="ml-4 flex-grow">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h3 className="text-white font-medium">Reached Level 3</h3>
-                        <p className="text-gray-400 text-sm mt-1">Unlocked new verification features</p>
+                        <h3 className="text-black font-medium">Reached Level 3</h3>
+                        <p className="text-gray-700 text-sm mt-1">Unlocked new verification features</p>
                       </div>
                       <div className="flex items-center">
                         <span className="text-gray-400 text-sm">1 day ago</span>
@@ -274,7 +282,7 @@ export default function Profile() {
                 </div>
               </div>
 
-              <div className="bg-[#1a1f27] p-5 rounded-xl relative overflow-hidden hover:bg-[#1e2530] transition-all group">
+              <div className="bg-white p-5 rounded-xl border border-gray-200 relative overflow-hidden hover:shadow-lg transition-all group">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full -mr-16 -mt-16 group-hover:bg-red-500/10 transition-all"></div>
                 <div className="relative flex items-center">
                   <div className="flex-shrink-0">
@@ -289,8 +297,8 @@ export default function Profile() {
                   <div className="ml-4 flex-grow">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h3 className="text-white font-medium">Started 7-day streak</h3>
-                        <p className="text-gray-400 text-sm mt-1">Keep verifying daily to earn bonus rewards</p>
+                        <h3 className="text-black font-medium">Started 7-day streak</h3>
+                        <p className="text-gray-700 text-sm mt-1">Keep verifying daily to earn bonus rewards</p>
                       </div>
                       <div className="flex items-center">
                         <span className="text-gray-400 text-sm">2 days ago</span>
@@ -307,13 +315,13 @@ export default function Profile() {
         {activeTab === 'achievements' && (
           <div className="mt-8">
             <div className="grid grid-cols-2 gap-6">
-              <div className="bg-[#1a1f27] p-6 rounded-xl relative overflow-hidden">
+              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full -mr-16 -mt-16"></div>
                 <div className="relative">
                   <div className="flex items-start justify-between mb-4">
                     <div>
-                      <h3 className="text-xl font-bold text-white mb-2">Truth Seeker</h3>
-                      <p className="text-gray-400 text-sm">Verify 50 news articles</p>
+                      <h3 className="text-xl font-bold text-black mb-2">Truth Seeker</h3>
+                      <p className="text-gray-700 text-sm">Verify 50 news articles</p>
                     </div>
                     <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
                       <div className="w-6 h-6 text-blue-500">
@@ -328,7 +336,7 @@ export default function Profile() {
                       <span className="text-sm text-gray-400">Progress</span>
                       <span className="text-sm font-medium text-white">32/50</span>
                     </div>
-                    <div className="w-full h-2 bg-[#151a21] rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div className="h-full w-[64%] bg-gradient-to-r from-blue-500 to-blue-400 rounded-full"></div>
                     </div>
                   </div>
@@ -336,13 +344,13 @@ export default function Profile() {
                 </div>
               </div>
 
-              <div className="bg-[#1a1f27] p-6 rounded-xl relative overflow-hidden">
+              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full -mr-16 -mt-16"></div>
                 <div className="relative">
                   <div className="flex items-start justify-between mb-4">
                     <div>
-                      <h3 className="text-xl font-bold text-white mb-2">Token Master</h3>
-                      <p className="text-gray-400 text-sm">Earn 1000 tokens</p>
+                      <h3 className="text-xl font-bold text-black mb-2">Token Master</h3>
+                      <p className="text-gray-700 text-sm">Earn 1000 tokens</p>
                     </div>
                     <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
                       <div className="w-6 h-6 text-purple-500">
@@ -358,7 +366,7 @@ export default function Profile() {
                       <span className="text-sm text-gray-400">Progress</span>
                       <span className="text-sm font-medium text-white">150/1000</span>
                     </div>
-                    <div className="w-full h-2 bg-[#151a21] rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div className="h-full w-[15%] bg-gradient-to-r from-purple-500 to-purple-400 rounded-full"></div>
                     </div>
                   </div>
@@ -366,13 +374,13 @@ export default function Profile() {
                 </div>
               </div>
 
-              <div className="bg-[#1a1f27] p-6 rounded-xl relative overflow-hidden">
+              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full -mr-16 -mt-16"></div>
                 <div className="relative">
                   <div className="flex items-start justify-between mb-4">
                     <div>
-                      <h3 className="text-xl font-bold text-white mb-2">Early Adopter</h3>
-                      <p className="text-gray-400 text-sm">Join in first month</p>
+                      <h3 className="text-xl font-bold text-black mb-2">Early Adopter</h3>
+                      <p className="text-gray-700 text-sm">Join in first month</p>
                     </div>
                     <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
                       <div className="w-6 h-6 text-green-500">
@@ -387,7 +395,7 @@ export default function Profile() {
                       <span className="text-sm text-gray-400">Status</span>
                       <span className="text-sm font-medium text-green-400">Completed!</span>
                     </div>
-                    <div className="w-full h-2 bg-[#151a21] rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div className="h-full w-full bg-gradient-to-r from-green-500 to-green-400 rounded-full"></div>
                     </div>
                   </div>
@@ -395,13 +403,13 @@ export default function Profile() {
                 </div>
               </div>
 
-              <div className="bg-[#1a1f27] p-6 rounded-xl relative overflow-hidden">
+              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full -mr-16 -mt-16"></div>
                 <div className="relative">
                   <div className="flex items-start justify-between mb-4">
                     <div>
-                      <h3 className="text-xl font-bold text-white mb-2">Streak Master</h3>
-                      <p className="text-gray-400 text-sm">Maintain 10 days streak</p>
+                      <h3 className="text-xl font-bold text-black mb-2">Streak Master</h3>
+                      <p className="text-gray-700 text-sm">Maintain 10 days streak</p>
                     </div>
                     <div className="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center">
                       <div className="w-6 h-6 text-red-500">
@@ -416,7 +424,7 @@ export default function Profile() {
                       <span className="text-sm text-gray-400">Progress</span>
                       <span className="text-sm font-medium text-white">7/10</span>
                     </div>
-                    <div className="w-full h-2 bg-[#151a21] rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div className="h-full w-[70%] bg-gradient-to-r from-red-500 to-red-400 rounded-full"></div>
                     </div>
                   </div>
@@ -430,12 +438,12 @@ export default function Profile() {
         {activeTab === 'stats' && (
           <div className="mt-8">
             <div className="grid grid-cols-2 gap-8">
-              <div className="bg-[#1a1f27] p-6 rounded-xl">
-                <h3 className="text-lg text-white font-medium mb-6">Verification Activity</h3>
+              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <h3 className="text-lg text-black font-medium mb-6">Verification Activity</h3>
                 <div className="flex items-center justify-between mb-8">
                   <div className="text-center">
-                    <p className="text-4xl font-bold text-white mb-2">156</p>
-                    <p className="text-gray-400 text-sm">This Month</p>
+                    <p className="text-4xl font-bold text-blue-900 mb-2">156</p>
+                    <p className="text-black text-sm">This Month</p>
                   </div>
                   <div className="text-center">
                     <p className="text-4xl font-bold text-blue-500 mb-2">45</p>
@@ -458,15 +466,15 @@ export default function Profile() {
                 </div>
               </div>
 
-              <div className="bg-[#1a1f27] p-6 rounded-xl">
-                <h3 className="text-lg text-white font-medium mb-6">Earnings Overview</h3>
+              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <h3 className="text-lg text-black font-medium mb-6">Earnings Overview</h3>
                 <div className="space-y-4">
                   <div>
                     <div className="flex justify-between text-sm mb-2">
                       <span className="text-gray-400">This Week</span>
                       <span className="text-white font-medium">$500</span>
                     </div>
-                    <div className="w-full h-2 bg-[#151a21] rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div className="h-full w-4/5 bg-gradient-to-r from-green-500 to-green-400 rounded-full"></div>
                     </div>
                   </div>
@@ -475,7 +483,7 @@ export default function Profile() {
                       <span className="text-gray-400">Last Week</span>
                       <span className="text-white font-medium">$350</span>
                     </div>
-                    <div className="w-full h-2 bg-[#151a21] rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div className="h-full w-3/5 bg-gradient-to-r from-green-500 to-green-400 rounded-full"></div>
                     </div>
                   </div>
@@ -484,7 +492,7 @@ export default function Profile() {
                       <span className="text-gray-400">Last Month</span>
                       <span className="text-white font-medium">$2,100</span>
                     </div>
-                    <div className="w-full h-2 bg-[#151a21] rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div className="h-full w-11/12 bg-gradient-to-r from-green-500 to-green-400 rounded-full"></div>
                     </div>
                   </div>
@@ -493,7 +501,7 @@ export default function Profile() {
                       <span className="text-gray-400">Total Earned</span>
                       <span className="text-white font-medium">$2,500</span>
                     </div>
-                    <div className="w-full h-2 bg-[#151a21] rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div className="h-full w-full bg-gradient-to-r from-green-500 to-green-400 rounded-full"></div>
                     </div>
                   </div>
