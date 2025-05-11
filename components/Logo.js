@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import Image from 'next/image';
 
 const Logo = ({ variant = 'text', theme = 'light', size = 'normal' }) => {
@@ -36,22 +35,18 @@ const Logo = ({ variant = 'text', theme = 'light', size = 'normal' }) => {
     }
   };
 
-  if (variant === 'image') {
-    return (
-      <div className="flex items-center">
-        <Image
-          src="/logo.svg"
-          alt="404 Fake Not Found"
-          width={size === 'small' ? 120 : size === 'normal' ? 160 : 200}
-          height={size === 'small' ? 40 : size === 'normal' ? 60 : 80}
-          priority
-        />
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex items-center hover:opacity-90 transition-opacity">
+  return variant === 'image' ? (
+    <div className="flex items-center">
+      <Image
+        src="/logo.svg"
+        alt="404 Fake Not Found"
+        width={size === 'small' ? 120 : size === 'normal' ? 160 : 200}
+        height={size === 'small' ? 40 : size === 'normal' ? 60 : 80}
+        priority
+      />
+    </div>
+  ) : (
+    <div className="flex items-center">
       <div className="flex items-center">
         <span 
           className={`${sizeClasses[size].emoji} mr-2`} 

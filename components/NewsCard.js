@@ -1,176 +1,122 @@
-import React, { useState } from 'react';
-import { FaCheckCircle, FaUserCheck, FaFlag, FaThumbsUp, FaThumbsDown, FaRobot } from 'react-icons/fa';
-import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import React from 'react';
+import { FiCheck, FiFlag, FiAlertTriangle } from 'react-icons/fi';
 
-const NewsCard = ({ 
-  title, 
+export default function NewsCard({
+  title,
   summary,
-  source, 
-  aiVerified, 
+  source,
+  author,
+  publishDate,
+  lastUpdated,
+  category,
+  aiVerified,
   userVerified,
   aiFlagged,
   aiFlagReason,
-  factualRating, 
+  factualRating,
   biasRating,
   stockSymbol,
   stockPrice,
   stockChange,
   stockMovement,
-  publishDate,
-  lastUpdated,
-  author,
-  category,
-  tags = [],
+  tags,
   onVerify,
   onFlag
-}) => {
-  const [isVerified, setIsVerified] = useState(userVerified);
-  const [isFlagged, setIsFlagged] = useState(false);
-
-  const handleVerify = () => {
-    setIsVerified(!isVerified);
-    onVerify && onVerify(!isVerified);
-  };
-
-  const handleFlag = () => {
-    setIsFlagged(!isFlagged);
-    onFlag && onFlag(!isFlagged);
-  };
-
+}) {
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-4 hover:shadow-lg transition-shadow">
-      <div className="flex flex-col">
-        {/* Title and Source */}
-        <div className="mb-4">
-          <h2 className="text-2xl font-bold mb-2">{title}</h2>
-          <div className="flex items-center gap-4 text-gray-600">
-            <p>Source: {source}</p>
-            <p>•</p>
-            <p>By {author}</p>
-            <p>•</p>
-            <p>Published: {publishDate}</p>
-            {lastUpdated && (
-              <>
-                <p>•</p>
-                <p>Updated: {lastUpdated}</p>
-              </>
-            )}
-          </div>
+    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+      <div className="flex justify-between items-start mb-4">
+        <div>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">{title}</h2>
+          <p className="text-gray-600 text-sm mb-2">
+            By {author} • {source} • {publishDate}
+            {lastUpdated && ` • Updated: ${lastUpdated}`}
+          </p>
         </div>
-
-        {/* Summary */}
-        <div className="mb-4">
-          <p className="text-gray-700">{summary}</p>
-        </div>
-
-        {/* Verification and Flagging */}
-        <div className="flex gap-4 mb-4">
-          <div className="flex gap-2">
-            {aiVerified && (
-              <span className="flex items-center gap-1 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                <FaCheckCircle /> AI Verified
-              </span>
-            )}
-            {isVerified && (
-              <span className="flex items-center gap-1 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-                <FaUserCheck /> User Verified
-              </span>
-            )}
-            {aiFlagged && (
-              <span className="flex items-center gap-1 bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
-                <FaRobot /> AI Flagged: {aiFlagReason}
-              </span>
-            )}
-          </div>
-          <div className="flex gap-2">
-            <button
-              onClick={handleVerify}
-              className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm ${
-                isVerified 
-                  ? 'bg-green-100 text-green-800' 
-                  : 'bg-gray-100 text-gray-800'
-              }`}
-            >
-              <FaThumbsUp /> {isVerified ? 'Verified' : 'Verify'}
-            </button>
-            <button
-              onClick={handleFlag}
-              className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm ${
-                isFlagged 
-                  ? 'bg-red-100 text-red-800' 
-                  : 'bg-gray-100 text-gray-800'
-              }`}
-            >
-              <FaFlag /> {isFlagged ? 'Flagged' : 'Flag'}
-            </button>
-          </div>
-        </div>
-
-        {/* Category */}
-        <div className="mb-4">
-          <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">
-            {category}
-          </span>
-        </div>
-
-        {/* Ratings */}
-        <div className="flex gap-6 mb-4">
-          <div>
-            <span className="text-sm text-gray-600">Factual Rating:</span>
-            <div className="w-32 h-2 bg-gray-200 rounded-full mt-1">
-              <div 
-                className="h-full bg-green-500 rounded-full" 
-                style={{ width: `${factualRating}%` }}
-              />
-            </div>
-          </div>
-          <div>
-            <span className="text-sm text-gray-600">Bias Rating:</span>
-            <div className="w-32 h-2 bg-gray-200 rounded-full mt-1">
-              <div 
-                className="h-full bg-yellow-500 rounded-full" 
-                style={{ width: `${biasRating}%` }}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Stock Information */}
-        {stockSymbol && (
-          <div className="bg-gray-50 p-3 rounded-lg mb-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="font-medium text-lg">{stockSymbol}</span>
-                <span className="ml-2 text-gray-600">${stockPrice}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                {stockMovement === 'up' ? (
-                  <FaArrowUp className="text-green-500" />
-                ) : (
-                  <FaArrowDown className="text-red-500" />
-                )}
-                <span className={stockMovement === 'up' ? 'text-green-500' : 'text-red-500'}>
-                  {stockChange}%
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Tags */}
-        <div className="flex flex-wrap gap-2">
-          {tags.map((tag, index) => (
-            <span 
-              key={index}
-              className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm"
-            >
-              {tag}
+        <div className="flex items-center space-x-2">
+          {aiVerified && (
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+              <FiCheck className="w-3 h-3 mr-1" />
+              AI Verified
             </span>
-          ))}
+          )}
+          {userVerified && (
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+              <FiCheck className="w-3 h-3 mr-1" />
+              User Verified
+            </span>
+          )}
+          {aiFlagged && (
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+              <FiAlertTriangle className="w-3 h-3 mr-1" />
+              AI Flagged
+            </span>
+          )}
+        </div>
+      </div>
+
+      <p className="text-gray-700 mb-4">{summary}</p>
+
+      <div className="flex flex-wrap gap-2 mb-4">
+        {tags.map((tag, index) => (
+          <span
+            key={index}
+            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+
+      <div className="flex justify-between items-center">
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center">
+            <span className="text-sm font-medium text-gray-700 mr-2">Factual:</span>
+            <div className="w-24 h-2 bg-gray-200 rounded-full">
+              <div
+                className="h-2 rounded-full"
+                style={{
+                  width: `${factualRating}%`,
+                  backgroundColor: factualRating >= 80 ? '#10B981' : factualRating >= 50 ? '#F59E0B' : '#EF4444'
+                }}
+              />
+            </div>
+          </div>
+          <div className="flex items-center">
+            <span className="text-sm font-medium text-gray-700 mr-2">Bias:</span>
+            <div className="w-24 h-2 bg-gray-200 rounded-full">
+              <div
+                className="h-2 rounded-full"
+                style={{
+                  width: `${biasRating}%`,
+                  backgroundColor: biasRating <= 30 ? '#10B981' : biasRating <= 60 ? '#F59E0B' : '#EF4444'
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={() => onVerify(!userVerified)}
+            className={`inline-flex items-center px-3 py-1 rounded-md text-sm font-medium ${
+              userVerified
+                ? 'bg-blue-100 text-blue-800 hover:bg-blue-200'
+                : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+            }`}
+          >
+            <FiCheck className="w-4 h-4 mr-1" />
+            {userVerified ? 'Verified' : 'Verify'}
+          </button>
+          <button
+            onClick={() => onFlag(true)}
+            className="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium bg-gray-100 text-gray-800 hover:bg-gray-200"
+          >
+            <FiFlag className="w-4 h-4 mr-1" />
+            Flag
+          </button>
         </div>
       </div>
     </div>
   );
-};
-
-export default NewsCard; 
+} 
