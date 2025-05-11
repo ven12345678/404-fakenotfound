@@ -15,10 +15,10 @@ export default function Home() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-40">
           <div className="text-center">
             <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-8 tracking-tight">
-              Fake News Buster
+              TruthScope
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 mb-16 max-w-3xl mx-auto">
-              Your trusted platform for news verification. Join our community of fact-checkers and help combat misinformation.
+              Your trusted source for information verification. We help you identify and validate facts with precision and reliability.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <button
