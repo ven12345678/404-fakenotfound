@@ -51,27 +51,21 @@ const NewsCard = ({
 The US remains Malaysia's third largest trading partner, and the tariffs, currently paused for 90 days, are part of a broader set of US trade actions affecting over 60 countries. Malaysian officials are focusing on emphasizing the mutual benefits of trade and exploring other pressure points, but a complete removal of tariffs appears unlikely in the near term.`
       : summary;
 
-  const tradingInsights =
-    title === "Malaysia Unlikely to Escape Trump Tariffs, Says Former US Trade Negotiator"
-      ? {
-          sentiment: `The overall sentiment of the articles is negative, as experts question the administration's ability to achieve its ambitious goal and highlight the significant challenges involved in managing multiple trade negotiations simultaneously.`,
-          recommendations: [
-            {
-              ticker: 'EUFX',
-              direction: 'up',
-              description: `The European Union's strong trade position and the potential for a resolution to the trade war could lead to a strengthening of the euro against the US dollar.`
-            },
-            {
-              ticker: 'US Steel (X)',
-              direction: 'down',
-              description: `The uncertainty and potential escalation of the trade war could lead to decreased demand for US steel exports, negatively impacting the stock price.`
-            }
-          ]
-        }
-      : {
-          sentiment: 'Trading insights will appear here.',
-          recommendations: []
-        };
+  const tradingInsights = {
+    sentiment: `The overall sentiment of the articles is negative, as experts question the administration's ability to achieve its ambitious goal and highlight the significant challenges involved in managing multiple trade negotiations simultaneously.`,
+    recommendations: [
+      {
+        ticker: 'EUFX',
+        direction: 'up',
+        description: `The European Union's strong trade position and the potential for a resolution to the trade war could lead to a strengthening of the euro against the US dollar.`
+      },
+      {
+        ticker: 'US Steel (X)',
+        direction: 'down',
+        description: `The uncertainty and potential escalation of the trade war could lead to decreased demand for US steel exports, negatively impacting the stock price.`
+      }
+    ]
+  };
 
   const originalSources =
   title === "Malaysia Unlikely to Escape Trump Tariffs, Says Former US Trade Negotiator"

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import NewsCard from '../components/NewsCard';
 import SearchFilter from '../components/SearchFilter';
+import { useRouter } from 'next/router';
+import { FiArrowLeft } from 'react-icons/fi';
 
 // Sample news data (replace with actual API data)
 const sampleNews = [
@@ -14,14 +16,11 @@ const sampleNews = [
     lastUpdated: "2024-03-15 14:30",
     category: "Technology",
     aiVerified: true,
-    userVerified: true,
+    userVerified: false,
     aiFlagged: false,
+    userFlagged: false,
     factualRating: 95,
     biasRating: 15,
-    stockSymbol: "TECH",
-    stockPrice: 245.67,
-    stockChange: 5.2,
-    stockMovement: "up",
     tags: ["AI", "Technology", "Innovation", "Healthcare", "Finance", "Research"]
   },
   {
@@ -33,15 +32,12 @@ const sampleNews = [
     publishDate: "2024-03-14",
     lastUpdated: "2024-03-14 16:45",
     category: "Finance",
-    aiVerified: true,
-    userVerified: false,
+    aiVerified: false,
+    userVerified: true,
     aiFlagged: false,
-    factualRating: 92,
-    biasRating: 25,
-    stockSymbol: "MKT",
-    stockPrice: 1850.75,
-    stockChange: -2.8,
-    stockMovement: "down",
+    userFlagged: false,
+    factualRating: 60,
+    biasRating: 45,
     tags: ["Economy", "Markets", "Policy", "Inflation", "Investing", "Banking"]
   },
   {
@@ -52,15 +48,12 @@ const sampleNews = [
     author: "Dr. Emily Rodriguez",
     publishDate: "2024-03-13",
     category: "Science",
-    aiVerified: true,
+    aiVerified: false,
     userVerified: false,
-    aiFlagged: false,
-    factualRating: 98,
-    biasRating: 10,
-    stockSymbol: "ECO",
-    stockPrice: 78.45,
-    stockChange: 3.5,
-    stockMovement: "up",
+    aiFlagged: true,
+    userFlagged: false,
+    factualRating: 40,
+    biasRating: 80,
     tags: ["Climate", "Environment", "Science", "Global Warming", "Research"]
   },
   {
@@ -75,12 +68,9 @@ const sampleNews = [
     aiVerified: true,
     userVerified: true,
     aiFlagged: false,
-    factualRating: 96,
-    biasRating: 20,
-    stockSymbol: "QC",
-    stockPrice: 156.78,
-    stockChange: 8.3,
-    stockMovement: "up",
+    userFlagged: false,
+    factualRating: 85,
+    biasRating: 25,
     tags: ["Quantum Computing", "Technology", "Research", "Science", "Innovation"]
   },
   {
@@ -93,10 +83,10 @@ const sampleNews = [
     category: "Social Media",
     aiVerified: false,
     userVerified: false,
-    aiFlagged: true,
-    aiFlagReason: "Potential Misinformation",
-    factualRating: 35,
-    biasRating: 85,
+    aiFlagged: false,
+    userFlagged: true,
+    factualRating: 30,
+    biasRating: 90,
     tags: ["Social Media", "Misinformation", "Viral", "Fact Check"]
   },
   {
@@ -109,13 +99,10 @@ const sampleNews = [
     category: "Health",
     aiVerified: true,
     userVerified: true,
-    aiFlagged: false,
-    factualRating: 94,
-    biasRating: 15,
-    stockSymbol: "HLTH",
-    stockPrice: 45.67,
-    stockChange: 2.1,
-    stockMovement: "up",
+    aiFlagged: true,
+    userFlagged: true,
+    factualRating: 75,
+    biasRating: 55,
     tags: ["Health", "Nutrition", "Research", "Longevity", "Diet"]
   },
   {
@@ -137,6 +124,7 @@ const sampleNews = [
 ];
 
 export default function NewsFeed() {
+  const router = useRouter();
   const [news, setNews] = useState(sampleNews);
   const [filters, setFilters] = useState({
     verification: 'all',
@@ -217,7 +205,22 @@ export default function NewsFeed() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Header removed */}
+      {/* Navigation */}
+      <nav className="bg-white shadow-sm mb-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center">
+              <button
+                onClick={() => router.push('/')} 
+                className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none transition-colors"
+              >
+                <FiArrowLeft className="w-5 h-5 mr-2" />
+                Back to Home
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
       <div className="container mx-auto px-4 py-8">
         <SearchFilter
           onSearch={handleSearch}
