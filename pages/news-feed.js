@@ -205,10 +205,10 @@ export default function NewsFeed() {
       <header className="bg-white shadow-md">
         <div className="container mx-auto px-4 py-6">
           <h1 className="text-4xl font-bold text-center text-gray-800">
-            404 Fake Not Found
+            Your News Feed
           </h1>
           <p className="text-center text-gray-600 mt-2">
-            Your trusted source for verified news and information
+            Stay informed with verified news from our community
           </p>
         </div>
       </header>
