@@ -6,6 +6,8 @@ import {
 
 const ProfileDashboard = ({ userData }) => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
   
   // Mock data - replace with actual user data from your backend
   const defaultUserData = {
@@ -44,6 +46,25 @@ const ProfileDashboard = ({ userData }) => {
   };
 
   const data = userData || defaultUserData;
+
+  const handleEditProfile = () => {
+    window.location.href = '/profile/edit';
+  };
+
+  const handleShareProfile = () => {
+    setShareModalOpen(true);
+  };
+
+  const handleCopyLink = async () => {
+    const profileUrl = `${window.location.origin}/profile/${data.name}`;
+    try {
+      await navigator.clipboard.writeText(profileUrl);
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  };
 
   const renderOverviewTab = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
@@ -248,18 +269,61 @@ const ProfileDashboard = ({ userData }) => {
           </div>
 
           <div className="flex gap-4">
-            <button className="px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors">
+            <button
+              onClick={handleEditProfile}
+              className="px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors"
+            >
               Edit Profile
             </button>
-            <button className="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+            <button
+              onClick={handleShareProfile}
+              className="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            >
               Share Profile
             </button>
           </div>
         </div>
       </div>
 
+      {/* Share Modal */}
+      {shareModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Share Profile</h3>
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  readOnly
+                  value={`${window.location.origin}/profile/${data.name}`}
+                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
+                />
+                <button
+                  onClick={handleCopyLink}
+                  className={`px-4 py-2 rounded-lg ${
+                    copySuccess
+                      ? 'bg-green-500 hover:bg-green-600'
+                      : 'bg-blue-500 hover:bg-blue-600'
+                  } text-white transition-colors`}
+                >
+                  {copySuccess ? 'Copied!' : 'Copy'}
+                </button>
+              </div>
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setShareModalOpen(false)}
+                  className="px-4 py-2 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Navigation Tabs */}
-      <div className="flex space-x-1 bg-gray-100 dark:bg-gray-700/50 p-1 rounded-xl">
+      <div className="flex gap-2 bg-gray-100 dark:bg-gray-800/50 p-1 rounded-lg">
         {['overview', 'activity', 'achievements', 'stats'].map((tab) => (
           <button
             key={tab}
