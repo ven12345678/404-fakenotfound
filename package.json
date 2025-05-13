@@ -11,17 +11,22 @@
     "test-api": "node scripts/test-api.js"
   },
   "dependencies": {
+    "@auth/core": "^0.39.1",
+    "@auth/mongodb-adapter": "^3.9.1",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.5.0",
     "express-rate-limit": "^7.5.0",
+    "google-auth-library": "^9.15.1",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^8.0.0",
     "next": "15.3.2",
-    "next-auth": "^4.24.0",
+    "next-auth": "^4.24.11",
+    "next-auth-client": "^1.5.0",
     "node-fetch": "^3.3.0",
     "nodemailer": "^6.9.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-google-recaptcha": "^3.1.0",
     "react-icons": "^5.5.0",
     "validator": "^13.11.0",
     "xss": "^1.0.15"
