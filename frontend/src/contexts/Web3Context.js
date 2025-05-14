@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ethers } from 'ethers';
+import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { config } from '../config/config';
 import { web3Service } from '../services/api';
 import TrueTokenABI from '../../../backend/artifacts/contracts/TrueToken.sol/TrueToken.json';
@@ -12,13 +15,19 @@ export const Web3Provider = ({ children }) => {
   const [provider, setProvider] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [walletType, setWalletType] = useState(null); // 'ethereum' or 'solana'
+  const [solanaConnection, setSolanaConnection] = useState(null);
 
   useEffect(() => {
-    initializeWeb3();
+    // Initialize Solana connection
+    const connection = new Connection(clusterApiUrl('devnet'));
+    setSolanaConnection(connection);
+
     if (window.ethereum) {
       window.ethereum.on('accountsChanged', handleAccountsChanged);
       window.ethereum.on('chainChanged', () => window.location.reload());
     }
+
     return () => {
       if (window.ethereum) {
         window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
@@ -33,7 +42,6 @@ export const Web3Provider = ({ children }) => {
         const web3Provider = new ethers.BrowserProvider(window.ethereum);
         setProvider(web3Provider);
 
-        // Initialize contract
         const trueToken = new ethers.Contract(
           config.CONTRACT_ADDRESS,
           TrueTokenABI.abi,
@@ -41,10 +49,10 @@ export const Web3Provider = ({ children }) => {
         );
         setContract(trueToken);
 
-        // Check if already connected
         const accounts = await web3Provider.listAccounts();
         if (accounts.length > 0) {
           setAccount(accounts[0].address);
+          setWalletType('ethereum');
         }
       }
     } catch (err) {
@@ -55,11 +63,12 @@ export const Web3Provider = ({ children }) => {
     }
   };
 
-  const connectWallet = async () => {
+  const connectEthereumWallet = async () => {
     try {
       setLoading(true);
       const address = await web3Service.connectWallet();
       setAccount(address);
+      setWalletType('ethereum');
       return address;
     } catch (err) {
       setError(err.message);
@@ -69,12 +78,50 @@ export const Web3Provider = ({ children }) => {
     }
   };
 
+  const connectSolanaWallet = async () => {
+    try {
+      setLoading(true);
+      
+      // Check if Phantom is installed
+      const { solana } = window;
+      if (!solana?.isPhantom) {
+        throw new Error('Phantom wallet is not installed');
+      }
+
+      // Connect to Phantom
+      const response = await solana.connect();
+      const address = response.publicKey.toString();
+      setAccount(address);
+      setWalletType('solana');
+      return address;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const connectWallet = async (type = 'ethereum') => {
+    if (type === 'solana') {
+      return connectSolanaWallet();
+    } else {
+      return connectEthereumWallet();
+    }
+  };
+
   const handleAccountsChanged = (accounts) => {
     if (accounts.length > 0) {
       setAccount(accounts[0]);
     } else {
       setAccount(null);
+      setWalletType(null);
     }
+  };
+
+  const disconnectWallet = () => {
+    setAccount(null);
+    setWalletType(null);
   };
 
   const value = {
@@ -84,6 +131,9 @@ export const Web3Provider = ({ children }) => {
     loading,
     error,
     connectWallet,
+    disconnectWallet,
+    walletType,
+    solanaConnection,
   };
 
   return <Web3Context.Provider value={value}>{children}</Web3Context.Provider>;
