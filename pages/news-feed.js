@@ -146,17 +146,41 @@ export default function NewsFeed() {
 
   const handleVerify = (newsId, isVerified) => {
     setNews(prevNews => 
-      prevNews.map(item => 
-        item.id === newsId 
-          ? { ...item, userVerified: isVerified }
-          : item
-      )
+      prevNews.map(item => {
+        if (item.id === newsId) {
+          // Increase factual rating by 10 points when verifying, capped at 100
+          // Decrease by 10 when unverifying, with a minimum of 0
+          const ratingChange = isVerified ? 10 : -10;
+          const newRating = Math.min(Math.max(item.factualRating + ratingChange, 0), 100);
+          
+          return {
+            ...item,
+            userVerified: isVerified,
+            factualRating: newRating
+          };
+        }
+        return item;
+      })
     );
   };
 
   const handleFlag = (newsId, isFlagged) => {
-    // Implement flagging logic here
-    console.log(`News ${newsId} ${isFlagged ? 'flagged' : 'unflagged'}`);
+    setNews(prevNews => 
+      prevNews.map(item => {
+        if (item.id === newsId) {
+          // Decrease factual rating by 15 points when flagging, increase when unflagging
+          const ratingChange = isFlagged ? -15 : 15;
+          const newRating = Math.min(Math.max(item.factualRating + ratingChange, 0), 100);
+          
+          return {
+            ...item,
+            userFlagged: isFlagged,
+            factualRating: newRating
+          };
+        }
+        return item;
+      })
+    );
   };
 
   const filterNews = (query, currentFilters) => {
