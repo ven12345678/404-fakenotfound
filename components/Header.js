@@ -2,7 +2,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FiUser, FiInfo, FiRss, FiCreditCard } from 'react-icons/fi';
 import Logo from './Logo';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import dynamic from 'next/dynamic';
+
+const WalletMultiButton = dynamic(
+  () => import('@solana/wallet-adapter-react-ui').then(mod => mod.WalletMultiButton),
+  { ssr: false }
+);
 
 export default function Header() {
   const router = useRouter();
@@ -53,17 +58,12 @@ export default function Header() {
               Profile
             </a>
 
-            <button
-              type="button"
-              onClick={() => {/* Add wallet connection logic */}}
-              className="inline-flex items-center px-6 py-2.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transition-all shadow-md hover:shadow-lg"
-            >
-              <FiCreditCard className="w-5 h-5 mr-2" />
+            <div className="wallet-adapter-button-trigger">
               <WalletMultiButton />
-            </button>
+            </div>
           </div>
         </div>
       </div>
     </nav>
   );
-} 
+}
