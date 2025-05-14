@@ -28,5 +28,5 @@ export default function App({ Component, pageProps }) {
         </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
-  );
+  );
 }

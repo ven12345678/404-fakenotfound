@@ -10,6 +10,7 @@ const geist = Geist({
 export default function Profile() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('overview');
+  const walletAddress = 'CfuZBM1wrae78TFFem9LtuGW4PRPd6BTZC1eciHojyKw';
 
   const handleEditProfile = () => {
     router.push('/profile/edit');
@@ -18,13 +19,17 @@ export default function Profile() {
   const handleShare = async () => {
     try {
       await navigator.share({
-        title: 'John Doe Profile',
+        title: `${formatWalletAddress(walletAddress)} Profile`,
         url: window.location.href
       });
     } catch (err) {
       await navigator.clipboard.writeText(window.location.href);
       alert('Profile link copied to clipboard!');
     }
+  };
+
+  const formatWalletAddress = (address) => {
+    return `${address.slice(0, 4)}...${address.slice(-4)}`;
   };
 
   return (
@@ -52,7 +57,7 @@ export default function Profile() {
           <div className="flex items-center">
             <div className="relative">
               <div className="w-24 h-24 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-2xl font-semibold text-white shadow-lg">
-                J
+                {walletAddress.charAt(0)}
               </div>
               <div className="absolute -bottom-1 -right-1 bg-green-500 rounded-full p-1.5 shadow-lg">
                 <FiCheck className="w-4 h-4 text-white" />
@@ -60,16 +65,18 @@ export default function Profile() {
             </div>
             <div className="ml-6 flex-grow">
               <div className="flex items-center gap-3 mb-1">
-                <h1 className="text-2xl font-bold text-gray-900">John Doe</h1>
+                <h1 className="text-2xl font-bold text-gray-900" title={walletAddress}>
+                  {formatWalletAddress(walletAddress)}
+                </h1>
                 <span className="bg-blue-500/20 text-blue-600 px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
                   <FiCheck className="w-3.5 h-3.5" />
                   Verified
                 </span>
               </div>
-              <p className="text-gray-500 text-sm mb-3">john@example.com</p>
+              <p className="text-gray-500 text-sm mb-3">lucas@gmail.com</p>
               <div className="flex items-center space-x-4">
                 <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-semibold">Truth Seeker</span>
-                <span className="text-gray-500 text-xs">Member since Jan 2024</span>
+                <span className="text-gray-500 text-xs">Member since Apr 2024</span>
                 <span className="flex items-center text-xs text-green-600 font-medium">
                   <span className="w-1.5 h-1.5 bg-green-400 rounded-full mr-1.5"></span>
                   Active Member
@@ -153,7 +160,7 @@ export default function Profile() {
               <div className="w-full h-1 bg-gray-200 rounded-full mb-3">
                 <div className="h-full w-3/4 bg-gradient-to-r from-blue-500 to-blue-400 rounded-full"></div>
               </div>
-              <p className="text-gray-500 text-sm">Next level in 25 verifications</p>
+              <p className="text-gray-500 text-sm">Next level in 5 verifications</p>
             </div>
 
             <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
@@ -216,12 +223,98 @@ export default function Profile() {
                   <div className="ml-4 flex-grow">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h3 className="text-black font-medium">Verified a news article</h3>
-                        <p className="text-gray-700 text-sm mt-1">Earned 15 tokens for verification</p>
+                        <h3 className="text-black font-medium">Flagged an article</h3>
+                        <p className="text-gray-700 text-sm mt-1">Deduct factual rating by 20 points</p>
                       </div>
                       <div className="flex items-center">
-                        <span className="text-gray-400 text-sm">2 hours ago</span>
+                        <span className="text-gray-400 text-sm">15 seconds ago</span>
                         <div className="w-2 h-2 rounded-full bg-blue-500 ml-3"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-5 rounded-xl border border-gray-200 relative overflow-hidden hover:shadow-lg transition-all group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full -mr-16 -mt-16 group-hover:bg-blue-500/10 transition-all"></div>
+                <div className="relative flex items-center">
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                      <div className="w-6 h-6 text-blue-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M11.625 16.5a1.875 1.875 0 100-3.75 1.875 1.875 0 000 3.75z" />
+                          <path fillRule="evenodd" d="M5.625 1.5H9a3.75 3.75 0 013.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 013.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 01-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875zm6 16.5c.66 0 1.277-.19 1.797-.518l1.048 1.048a.75.75 0 001.06-1.06l-1.047-1.048A3.375 3.375 0 1011.625 18z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="ml-4 flex-grow">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-black font-medium">Flagged an AI verified article</h3>
+                        <p className="text-gray-700 text-sm mt-1">Reduced factual rating by 20 points <br /> <br />
+                          Reduced bias rating by 20 points</p>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-gray-400 text-sm">45 seconds ago</span>
+                        <div className="w-2 h-2 rounded-full bg-blue-500 ml-3"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-5 rounded-xl border border-gray-200 relative overflow-hidden hover:shadow-lg transition-all group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full -mr-16 -mt-16 group-hover:bg-blue-500/10 transition-all"></div>
+                <div className="relative flex items-center">
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                      <div className="w-6 h-6 text-blue-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M11.625 16.5a1.875 1.875 0 100-3.75 1.875 1.875 0 000 3.75z" />
+                          <path fillRule="evenodd" d="M5.625 1.5H9a3.75 3.75 0 013.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 013.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 01-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875zm6 16.5c.66 0 1.277-.19 1.797-.518l1.048 1.048a.75.75 0 001.06-1.06l-1.047-1.048A3.375 3.375 0 1011.625 18z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="ml-4 flex-grow">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-black font-medium">Verified a news article</h3>
+                        <p className="text-gray-700 text-sm mt-1">Factual rating increased by 10 points <br /> <br />
+                          Earned 15 tokens for verification
+                        </p>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-gray-400 text-sm">2 minutes ago</span>
+                        <div className="w-2 h-2 rounded-full bg-blue-500 ml-3"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-5 rounded-xl border border-gray-200 relative overflow-hidden hover:shadow-lg transition-all group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full -mr-16 -mt-16 group-hover:bg-purple-500/10 transition-all"></div>
+                <div className="relative flex items-center">
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
+                      <div className="w-6 h-6 text-purple-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                          <path fillRule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="ml-4 flex-grow">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-black font-medium">Reached Level 3</h3>
+                        <p className="text-gray-700 text-sm mt-1">Unlocked new verification features</p>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-gray-400 text-sm">3 minute ago</span>
+                        <div className="w-2 h-2 rounded-full bg-purple-500 ml-3"></div>
                       </div>
                     </div>
                   </div>
@@ -249,33 +342,6 @@ export default function Profile() {
                       <div className="flex items-center">
                         <span className="text-gray-400 text-sm">5 hours ago</span>
                         <div className="w-2 h-2 rounded-full bg-green-500 ml-3"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white p-5 rounded-xl border border-gray-200 relative overflow-hidden hover:shadow-lg transition-all group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full -mr-16 -mt-16 group-hover:bg-purple-500/10 transition-all"></div>
-                <div className="relative flex items-center">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
-                      <div className="w-6 h-6 text-purple-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                          <path fillRule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="ml-4 flex-grow">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="text-black font-medium">Reached Level 3</h3>
-                        <p className="text-gray-700 text-sm mt-1">Unlocked new verification features</p>
-                      </div>
-                      <div className="flex items-center">
-                        <span className="text-gray-400 text-sm">1 day ago</span>
-                        <div className="w-2 h-2 rounded-full bg-purple-500 ml-3"></div>
                       </div>
                     </div>
                   </div>

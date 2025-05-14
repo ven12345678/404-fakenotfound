@@ -148,15 +148,29 @@ export default function NewsFeed() {
     setNews(prevNews => 
       prevNews.map(item => {
         if (item.id === newsId) {
-          // Increase factual rating by 10 points when verifying, capped at 100
-          // Decrease by 10 when unverifying, with a minimum of 0
-          const ratingChange = isVerified ? 10 : -10;
-          const newRating = Math.min(Math.max(item.factualRating + ratingChange, 0), 100);
+          let newFactualRating = item.factualRating;
+          let newBiasRating = item.biasRating;
+
+          if (isVerified) {
+            if (item.aiFlagged || item.userFlagged) {
+              // If article is flagged (by AI or user) and being verified,
+              // decrease both factual and bias ratings
+              newFactualRating = Math.max(item.factualRating - 15, 0);
+              newBiasRating = Math.max(item.biasRating - 20, 0);
+            } else {
+              // Normal verification without flags
+              newFactualRating = Math.min(item.factualRating + 10, 100);
+            }
+          } else {
+            // Unverifying always decreases factual rating
+            newFactualRating = Math.max(item.factualRating - 10, 0);
+          }
           
           return {
             ...item,
             userVerified: isVerified,
-            factualRating: newRating
+            factualRating: newFactualRating,
+            biasRating: newBiasRating
           };
         }
         return item;

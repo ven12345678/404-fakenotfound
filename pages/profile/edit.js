@@ -10,8 +10,8 @@ const geist = Geist({
 export default function EditProfile() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    name: 'John Doe',
-    email: 'john@example.com',
+    name: 'CfuZBM1wrae78TFFem9LtuGW4PRPd6BTZC1eciHojyKw',
+    email: 'lucas@gmail.com',
     bio: '',
     website: ''
   });

@@ -9,7 +9,7 @@ const geist = Geist({
 const leaderboardData = [
   {
     rank: 1,
-    name: "Alice Tan",
+    name: "DuWDeZnpX6uGvCxz9yCAxnuPqNg1EGqp2wDJxHxE7LvH",
     level: 7,
     tokens: 320,
     earnings: 1200,
@@ -17,7 +17,7 @@ const leaderboardData = [
   },
   {
     rank: 2,
-    name: "Ben Lee",
+    name: "8ZJ5LvKwk4H2xE9YxGXK1HgJ9ZKJv1rvEJmLH3v6XrNq",
     level: 6,
     tokens: 280,
     earnings: 1050,
@@ -25,7 +25,7 @@ const leaderboardData = [
   },
   {
     rank: 3,
-    name: "Chloe Lim",
+    name: "3rUwXNYw9CmZv3vEzVH2YzpQcmxQKDWCz7YnXLmkBvPs",
     level: 6,
     tokens: 250,
     earnings: 980,
@@ -33,7 +33,7 @@ const leaderboardData = [
   },
   {
     rank: 4,
-    name: "David Ng",
+    name: "FbJ3EmHvgcGxEqaHNxZkkwvJyQMtSxPXwEGzp2P7ZLj4",
     level: 5,
     tokens: 200,
     earnings: 800,
@@ -41,7 +41,7 @@ const leaderboardData = [
   },
   {
     rank: 5,
-    name: "Emily Wong",
+    name: "Gk9EqvE4pZxmKQn1JHyQZhW2ZxVmRKyDeiJ6HcY3MtL5",
     level: 5,
     tokens: 180,
     earnings: 750,
@@ -93,7 +93,11 @@ export default function Leaderboard() {
                       {user.rank}
                     </span>
                   </div>
-                  <div className="font-medium text-gray-900">{user.name}</div>
+                  <div className="font-medium text-gray-900">
+                    <span title={user.name}>
+                      {user.name.slice(0, 4)}...{user.name.slice(-4)}
+                    </span>
+                  </div>
                   <div className="flex flex-col items-start">
                     <span className="flex items-center gap-1 text-yellow-600 font-semibold"><FiAward /> {user.level}</span>
                   </div>
