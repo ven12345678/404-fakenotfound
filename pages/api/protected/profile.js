@@ -27,7 +27,8 @@ export default async function handler(req, res) {
       await connectDB();
 
       // Find user
-      const user = await User.findById(decoded.id).select('-password -emailVerificationToken -emailVerificationExpires -passwordResetToken -passwordResetExpires');
+      const user = await User.findById(decoded.id)
+        .select('-password -emailVerificationToken -emailVerificationExpires -passwordResetToken -passwordResetExpires');
       
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
@@ -47,6 +48,7 @@ export default async function handler(req, res) {
         verificationStreak: user.verificationStreak,
         accuracy: user.accuracy,
         newsVerified: user.totalVerifications,
+        verifiedNews: user.verifiedNews || [],
         recentActivity: user.recentVerifications.map(v => ({
           id: v._id,
           type: 'verify',

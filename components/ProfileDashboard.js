@@ -1,13 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   FiUser, FiAward, FiDollarSign, FiCheckCircle, FiBarChart, 
-  FiTrendingUp, FiClock, FiAlertCircle, FiThumbsUp, FiShare2 
+  FiTrendingUp, FiClock, FiAlertCircle, FiThumbsUp, FiShare2,
+  FiX, FiBell 
 } from 'react-icons/fi';
 
 const ProfileDashboard = ({ userData }) => {
   const [activeTab, setActiveTab] = useState('overview');
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
+  const [notification, setNotification] = useState(null);
+  const [notifications, setNotifications] = useState([]);
+  const [showNotificationList, setShowNotificationList] = useState(false);
+  const [activities, setActivities] = useState([]);
   
   // Mock data - replace with actual user data from your backend
   const defaultUserData = {
@@ -21,17 +26,17 @@ const ProfileDashboard = ({ userData }) => {
     rank: "Truth Seeker",
     joinDate: "Jan 2024",
     verificationStreak: 7,
+    achievements: [
+      { id: 1, title: 'First Verification', description: 'Complete your first fact verification', progress: 100, reward: 50, completed: true },
+      { id: 2, title: 'Accuracy Master', description: 'Maintain 90% accuracy for a week', progress: 75, reward: 100, completed: false },
+      { id: 3, title: 'Streak Champion', description: 'Maintain a 7-day verification streak', progress: 85, reward: 150, completed: false },
+      { id: 4, title: 'Category Expert', description: 'Verify 50 articles in one category', progress: 60, reward: 200, completed: false }
+    ],
     recentActivity: [
       { id: 1, type: 'verify', title: 'Climate Change Report', status: 'Fake', reward: 15, time: '2 hours ago' },
       { id: 2, type: 'verify', title: 'Political Statement Analysis', status: 'True', reward: 10, time: '5 hours ago' },
       { id: 3, type: 'achievement', title: 'Accuracy Master', reward: 50, time: '1 day ago' },
       { id: 4, type: 'verify', title: 'Economic News Review', status: 'Misleading', reward: 12, time: '2 days ago' },
-    ],
-    achievements: [
-      { id: 1, title: 'First Verification', description: 'Complete your first news verification', completed: true },
-      { id: 2, title: '10 Streak', description: 'Verify news for 10 days in a row', completed: false, progress: 7 },
-      { id: 3, title: 'Accuracy Expert', description: 'Maintain 90% accuracy for a month', completed: true },
-      { id: 4, title: 'Community Leader', description: 'Help 50 users with verifications', completed: false, progress: 28 },
     ],
     stats: {
       totalEarned: 2500,
@@ -46,6 +51,11 @@ const ProfileDashboard = ({ userData }) => {
   };
 
   const data = userData || defaultUserData;
+
+  useEffect(() => {
+    // Initialize activities from userData or defaultUserData
+    setActivities(data.recentActivity);
+  }, []);
 
   const handleEditProfile = () => {
     window.location.href = '/profile/edit';
@@ -63,6 +73,130 @@ const ProfileDashboard = ({ userData }) => {
       setTimeout(() => setCopySuccess(false), 2000);
     } catch (err) {
       console.error('Failed to copy text: ', err);
+    }
+  };
+
+  // Function to format time ago
+  const getTimeAgo = (timestamp) => {
+    const seconds = Math.floor((new Date() - timestamp) / 1000);
+    
+    let interval = seconds / 31536000;
+    if (interval > 1) return Math.floor(interval) + ' years ago';
+    
+    interval = seconds / 2592000;
+    if (interval > 1) return Math.floor(interval) + ' months ago';
+    
+    interval = seconds / 86400;
+    if (interval > 1) return Math.floor(interval) + ' days ago';
+    
+    interval = seconds / 3600;
+    if (interval > 1) return Math.floor(interval) + ' hours ago';
+    
+    interval = seconds / 60;
+    if (interval > 1) return Math.floor(interval) + ' minutes ago';
+    
+    return Math.floor(seconds) + ' seconds ago';
+  };
+
+  // Function to show notification
+  const showNotification = (message, tokens) => {
+    const newNotification = {
+      id: Date.now(),
+      message,
+      tokens,
+      timestamp: new Date(),
+    };
+    
+    setNotifications(prev => [newNotification, ...prev].slice(0, 10)); // Keep last 10 notifications
+    setNotification(newNotification);
+    setTimeout(() => setNotification(null), 3000); // Hide popup after 3 seconds
+  };
+
+  // Notification popup component
+  const NotificationPopup = ({ message, tokens, onClose }) => (
+    <div className="fixed top-4 right-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 z-50 animate-fade-in">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center">
+          <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-3">
+            <FiCheckCircle className="w-5 h-5 text-green-500" />
+          </div>
+          <div>
+            <p className="font-medium text-gray-800 dark:text-white">{message}</p>
+            <p className="text-sm text-gray-500">Earned {tokens} tokens for verification</p>
+          </div>
+        </div>
+        <button 
+          onClick={onClose}
+          className="ml-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+        >
+          <FiX className="w-5 h-5" />
+        </button>
+      </div>
+    </div>
+  );
+
+  // Notifications list component
+  const NotificationsList = ({ notifications, onClose }) => (
+    <div className="absolute top-full right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-lg z-40">
+      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Notifications</h3>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+            <FiX className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+      <div className="max-h-96 overflow-y-auto">
+        {notifications.length === 0 ? (
+          <div className="p-4 text-center text-gray-500">
+            No notifications yet
+          </div>
+        ) : (
+          notifications.map(notif => (
+            <div key={notif.id} className="p-4 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+              <div className="flex items-center">
+                <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-3">
+                  <FiCheckCircle className="w-5 h-5 text-green-500" />
+                </div>
+                <div className="flex-1">
+                  <p className="font-medium text-gray-800 dark:text-white">{notif.message}</p>
+                  <p className="text-sm text-gray-500">Earned {notif.tokens} tokens</p>
+                  <p className="text-xs text-gray-400 mt-1">{getTimeAgo(notif.timestamp)}</p>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+
+  // Function to add new verification to activity feed
+  const addNewVerification = (status) => {
+    const newActivity = {
+      id: Date.now(),
+      type: 'verify',
+      title: 'News Article Verification',
+      status: status,
+      reward: 15,
+      time: 'just now'
+    };
+
+    setActivities(prev => [newActivity, ...prev]);
+    showNotification("Verified a news article", 15);
+  };
+
+  // Function to get status color
+  const getStatusColor = (status) => {
+    switch(status) {
+      case 'Fake':
+        return 'bg-red-100 dark:bg-red-900/30 text-red-500';
+      case 'True':
+        return 'bg-green-100 dark:bg-green-900/30 text-green-500';
+      case 'Misleading':
+        return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-500';
+      default:
+        return 'bg-blue-100 dark:bg-blue-900/30 text-blue-500';
     }
   };
 
@@ -96,7 +230,7 @@ const ProfileDashboard = ({ userData }) => {
         </div>
         <div className="flex items-center text-sm text-green-500">
           <FiTrendingUp className="mr-1" />
-          +45 this week
+          +{data.weeklyTokens} this week
         </div>
       </div>
 
@@ -104,13 +238,13 @@ const ProfileDashboard = ({ userData }) => {
         <div className="flex items-center justify-between mb-4">
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Earnings</p>
-            <h3 className="text-2xl font-bold text-gray-800 dark:text-white mt-1">${data.balance}</h3>
+            <h3 className="text-2xl font-bold text-gray-800 dark:text-white mt-1">${data.tokens * 5}</h3>
           </div>
           <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
             <FiDollarSign className="w-6 h-6 text-green-500" />
           </div>
         </div>
-        <p className="text-sm text-gray-500">Total earned: ${data.stats.totalEarned}</p>
+        <p className="text-sm text-gray-500">Total earned: ${data.stats.totalEarned * 5}</p>
       </div>
 
       <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
@@ -130,25 +264,93 @@ const ProfileDashboard = ({ userData }) => {
 
   const renderActivityTab = () => (
     <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
-      <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-6">Recent Activity</h3>
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Recent Activity</h3>
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <button
+              onClick={() => setShowNotificationList(!showNotificationList)}
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 relative"
+            >
+              <FiBell className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+              {notifications.length > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full text-xs text-white flex items-center justify-center">
+                  {notifications.length}
+                </span>
+              )}
+            </button>
+            {showNotificationList && (
+              <NotificationsList 
+                notifications={notifications} 
+                onClose={() => setShowNotificationList(false)} 
+              />
+            )}
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => addNewVerification('True')}
+              className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center gap-2"
+            >
+              <FiCheckCircle className="w-4 h-4" />
+              Verify as True
+            </button>
+            <button
+              onClick={() => addNewVerification('Fake')}
+              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center gap-2"
+            >
+              <FiAlertCircle className="w-4 h-4" />
+              Mark as Fake
+            </button>
+            <button
+              onClick={() => addNewVerification('Misleading')}
+              className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors flex items-center gap-2"
+            >
+              <FiAlertCircle className="w-4 h-4" />
+              Flag as Misleading
+            </button>
+          </div>
+        </div>
+      </div>
       <div className="space-y-6">
-        {data.recentActivity.map((activity) => (
-          <div key={activity.id} className="flex items-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-            <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-4">
+        {activities.map((activity, index) => (
+          <div 
+            key={activity.id} 
+            className={`flex items-center p-4 rounded-xl transition-all duration-300 ${
+              index === 0 ? 'bg-blue-50 dark:bg-blue-900/20 shadow-md' : 'bg-gray-50 dark:bg-gray-700/50'
+            } ${
+              index === 0 ? 'scale-100' : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+            }`}
+          >
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-4 ${
+              activity.type === 'verify' ? getStatusColor(activity.status) : 'bg-purple-100 dark:bg-purple-900/30'
+            }`}>
               {activity.type === 'verify' ? (
-                <FiCheckCircle className="w-5 h-5 text-blue-500" />
+                activity.status === 'Fake' ? (
+                  <FiAlertCircle className="w-5 h-5" />
+                ) : activity.status === 'Misleading' ? (
+                  <FiAlertCircle className="w-5 h-5" />
+                ) : (
+                  <FiCheckCircle className="w-5 h-5" />
+                )
               ) : (
                 <FiAward className="w-5 h-5 text-purple-500" />
               )}
             </div>
             <div className="flex-1">
               <div className="flex items-center justify-between">
-                <p className="font-medium text-gray-800 dark:text-white">{activity.title}</p>
+                <p className="font-medium text-gray-800 dark:text-white">
+                  {activity.title}
+                  {index === 0 && (
+                    <span className="ml-2 text-xs bg-blue-500 text-white px-2 py-1 rounded-full">
+                      New
+                    </span>
+                  )}
+                </p>
                 <span className="text-sm text-gray-500">{activity.time}</span>
               </div>
               {activity.status && (
                 <div className="flex items-center mt-1">
-                  <span className={`text-sm ${
+                  <span className={`text-sm font-medium ${
                     activity.status === 'Fake' ? 'text-red-500' :
                     activity.status === 'True' ? 'text-green-500' :
                     'text-yellow-500'
@@ -159,45 +361,6 @@ const ProfileDashboard = ({ userData }) => {
                 </div>
               )}
             </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
-  const renderAchievementsTab = () => (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {data.achievements.map((achievement) => (
-          <div key={achievement.id} className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center">
-                <div className={`w-12 h-12 rounded-full ${
-                  achievement.completed ? 'bg-green-100 dark:bg-green-900/30' : 'bg-gray-100 dark:bg-gray-700'
-                } flex items-center justify-center mr-4`}>
-                  <FiAward className={`w-6 h-6 ${
-                    achievement.completed ? 'text-green-500' : 'text-gray-400'
-                  }`} />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-gray-800 dark:text-white">{achievement.title}</h4>
-                  <p className="text-sm text-gray-500">{achievement.description}</p>
-                </div>
-              </div>
-            </div>
-            {!achievement.completed && achievement.progress && (
-              <div>
-                <div className="flex items-center justify-between text-sm mb-1">
-                  <span className="text-gray-500">{achievement.progress}% Complete</span>
-                </div>
-                <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-1.5">
-                  <div 
-                    className="bg-blue-500 h-1.5 rounded-full" 
-                    style={{ width: `${achievement.progress}%` }}
-                  />
-                </div>
-              </div>
-            )}
           </div>
         ))}
       </div>
@@ -243,8 +406,43 @@ const ProfileDashboard = ({ userData }) => {
     </div>
   );
 
+  const renderAchievementsTab = () => (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {data.achievements.map((achievement) => (
+        <div key={achievement.id} className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h4 className="font-medium text-gray-800 dark:text-white">{achievement.title}</h4>
+              <p className="text-sm text-gray-500 mt-1">{achievement.description}</p>
+            </div>
+            <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+              <FiAward className={`w-6 h-6 ${achievement.completed ? 'text-green-500' : 'text-blue-500'}`} />
+            </div>
+          </div>
+          <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-1.5 mb-2">
+            <div 
+              className={`h-1.5 rounded-full ${achievement.completed ? 'bg-green-500' : 'bg-blue-500'}`}
+              style={{ width: `${achievement.progress}%` }}
+            />
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-gray-500">{achievement.progress}% complete</span>
+            <span className="text-sm font-medium text-blue-500">+{achievement.reward} tokens</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <div className="space-y-6">
+      {notification && (
+        <NotificationPopup 
+          message={notification.message}
+          tokens={notification.tokens}
+          onClose={() => setNotification(null)}
+        />
+      )}
       {/* Profile Header */}
       <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
         <div className="flex flex-col md:flex-row items-center gap-6">
@@ -343,8 +541,8 @@ const ProfileDashboard = ({ userData }) => {
       <div className="mt-6">
         {activeTab === 'overview' && renderOverviewTab()}
         {activeTab === 'activity' && renderActivityTab()}
-        {activeTab === 'achievements' && renderAchievementsTab()}
         {activeTab === 'stats' && renderStatsTab()}
+        {activeTab === 'achievements' && renderAchievementsTab()}
       </div>
     </div>
   );

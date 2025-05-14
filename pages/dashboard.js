@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import ProfileDashboard from '../components/ProfileDashboard';
-import { FiAward, FiCheck, FiX, FiX as FiClose, FiDollarSign } from 'react-icons/fi';
+import { FiAward, FiCheck, FiX, FiX as FiClose, FiDollarSign, FiTrendingUp } from 'react-icons/fi';
 
 export default function Dashboard() {
   const router = useRouter();
@@ -12,6 +12,7 @@ export default function Dashboard() {
   const [lastVerificationDate, setLastVerificationDate] = useState(null);
   const [currentStreak, setCurrentStreak] = useState(0);
   const [tokens, setTokens] = useState(0);
+  const [weeklyTokens, setWeeklyTokens] = useState(0);
   const [achievements, setAchievements] = useState([
     {
       title: 'First Verification',
@@ -39,6 +40,8 @@ export default function Dashboard() {
       progress: 0
     }
   ]);
+  const [isSavingAchievements, setIsSavingAchievements] = useState(false);
+  const [verifiedNewsIds, setVerifiedNewsIds] = useState(new Set());
 
   // Sample news data
   const [feedNews, setFeedNews] = useState([
@@ -328,38 +331,41 @@ export default function Dashboard() {
     }
   };
 
+  // Load user data and achievements
   useEffect(() => {
-    const checkAuth = async () => {
-      const token = localStorage.getItem('token');
-      
-      if (!token) {
-        router.replace('/login');
-        return;
-      }
-
+    const fetchUserData = async () => {
       try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          router.push('/login');
+          return;
+        }
+
         const response = await fetch('/api/protected/profile', {
           headers: {
-            Authorization: `Bearer ${token}`,
-          },
+            Authorization: `Bearer ${token}`
+          }
         });
 
         if (!response.ok) {
-          throw new Error('Not authenticated');
+          throw new Error('Failed to fetch user data');
         }
 
         const data = await response.json();
         setUser(data.user);
-      } catch (error) {
-        console.error('Authentication error:', error);
-        localStorage.removeItem('token');
-        router.replace('/login');
-      } finally {
+        setTokens(data.user.tokens || 0);
+        setAchievements(data.user.achievements || []);
+        const verifiedNews = data.user.verifiedNews || [];
+        setVerifiedNewsIds(new Set(verifiedNews.map(v => v.newsId)));
+        setWeeklyTokens(calculateWeeklyTokens(verifiedNews));
         setLoading(false);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        router.push('/login');
       }
     };
 
-    checkAuth();
+    fetchUserData();
   }, [router]);
 
   const handleLogout = () => {
@@ -367,42 +373,85 @@ export default function Dashboard() {
     router.replace('/login');
   };
 
+  // Show token earning notification
+  const showTokenNotification = (amount) => {
+    const notification = document.createElement('div');
+    notification.className = 'fixed bottom-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded flex items-center space-x-2';
+    notification.innerHTML = `
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+      </svg>
+      <span>Earned ${amount} tokens!</span>
+    `;
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 3000);
+  };
+
+  // Save verified news status
+  const saveVerifiedNews = async (newsId, isCorrect, category) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        router.push('/login');
+        return;
+      }
+
+      const response = await fetch('/api/protected/update-verified-news', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          newsId,
+          isCorrect,
+          category
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update verified news');
+      }
+
+      const data = await response.json();
+      setVerifiedNewsIds(new Set(data.verifiedNews.map(v => v.newsId)));
+      setTokens(data.tokens);
+      
+      // Show token earning notification if tokens were earned
+      if (data.tokensEarned) {
+        showTokenNotification(data.tokensEarned);
+      }
+    } catch (error) {
+      console.error('Error saving verified news:', error);
+      const notification = document.createElement('div');
+      notification.className = 'fixed bottom-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded';
+      notification.innerHTML = `<div class="flex items-center"><svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"/></svg>${error.message}</div>`;
+      document.body.appendChild(notification);
+      setTimeout(() => notification.remove(), 5000);
+    }
+  };
+
   const handleVerify = (newsId) => {
-    // Update news verification status first
     setFeedNews(prevNews => {
       const updatedNews = prevNews.map(news => {
         if (news.id === newsId) {
-          const newVerifiedState = !news.userVerified;
-          
-          // Award tokens only when verifying (not when un-verifying)
-          if (newVerifiedState) {
-            const newTokens = tokens + 15;
-            setTokens(newTokens);
-            localStorage.setItem('userTokens', newTokens.toString());
-            
-            // Show token earning notification
-            const notification = document.createElement('div');
-            notification.className = 'fixed bottom-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded';
-            notification.innerHTML = `<div class="flex items-center"><svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg>Earned 15 tokens!</div>`;
-            document.body.appendChild(notification);
-            setTimeout(() => notification.remove(), 3000);
-          }
-          
-          return { ...news, userVerified: newVerifiedState };
+          saveVerifiedNews(
+            news.id,
+            news.aiVerified,
+            news.category
+          );
+          return { ...news, userVerified: true };
         }
         return news;
       });
-      
-      // After updating news, update achievements
+
+      // Calculate verification stats
       const verifiedCount = updatedNews.filter(news => news.userVerified).length;
-      
-      // Update last verification date and streak
-      const today = new Date();
-      setLastVerificationDate(today);
-      localStorage.setItem('lastVerificationDate', today.toISOString());
-      
-      const updatedStreak = updateStreak();
-      
+      const accurateVerifications = updatedNews.filter(news => 
+        news.userVerified && news.aiVerified
+      ).length;
+
+      // Update achievements
       setAchievements(prevAchievements => {
         const newAchievements = [...prevAchievements];
 
@@ -411,23 +460,22 @@ export default function Dashboard() {
           newAchievements[0] = {
             ...newAchievements[0],
             completed: true,
-            progress: 100
+            progress: 100,
+            completedAt: new Date()
           };
         }
 
-        // 10 Streak Achievement - now based on consecutive days
-        const streakProgress = Math.min((updatedStreak / 10) * 100, 100);
+        // 10 Streak Achievement
+        const streakProgress = Math.min((currentStreak / 10) * 100, 100);
         newAchievements[1] = {
           ...newAchievements[1],
           completed: streakProgress === 100,
           progress: streakProgress,
-          streak: updatedStreak
+          streak: currentStreak,
+          ...(streakProgress === 100 && { completedAt: new Date() })
         };
 
         // Accuracy Expert Achievement
-        const accurateVerifications = updatedNews.filter(news => 
-          news.userVerified && news.aiVerified
-        ).length;
         const accuracyRate = verifiedCount > 0 
           ? (accurateVerifications / verifiedCount) * 100 
           : 0;
@@ -435,7 +483,8 @@ export default function Dashboard() {
         newAchievements[2] = {
           ...newAchievements[2],
           completed: accuracyProgress >= 90,
-          progress: accuracyProgress
+          progress: accuracyProgress,
+          ...(accuracyProgress >= 90 && { completedAt: new Date() })
         };
 
         // Community Leader Achievement
@@ -443,7 +492,8 @@ export default function Dashboard() {
         newAchievements[3] = {
           ...newAchievements[3],
           completed: communityProgress === 100,
-          progress: communityProgress
+          progress: communityProgress,
+          ...(communityProgress === 100 && { completedAt: new Date() })
         };
 
         return newAchievements;
@@ -461,6 +511,73 @@ export default function Dashboard() {
           : news
       )
     );
+  };
+
+  // Save achievements when they change, but only if they were changed by a user action
+  const saveAchievements = async (updatedAchievements) => {
+    try {
+      setIsSavingAchievements(true);
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found');
+        router.push('/login');
+        return;
+      }
+
+      console.log('Saving achievements:', updatedAchievements);
+
+      const response = await fetch('/api/protected/update-achievements', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ achievements: updatedAchievements })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to update achievements');
+      }
+
+      console.log('Achievements saved successfully:', data);
+      setAchievements(data.achievements);
+    } catch (error) {
+      console.error('Error saving achievements:', error);
+      // Show error notification to user
+      const notification = document.createElement('div');
+      notification.className = 'fixed bottom-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded';
+      notification.innerHTML = `<div class="flex items-center"><svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"/></svg>${error.message}</div>`;
+      document.body.appendChild(notification);
+      setTimeout(() => notification.remove(), 5000);
+    } finally {
+      setIsSavingAchievements(false);
+    }
+  };
+
+  // Update achievements when they change, with debounce
+  useEffect(() => {
+    if (achievements.length > 0 && !isSavingAchievements) {
+      const timeoutId = setTimeout(() => {
+        saveAchievements(achievements);
+      }, 1000); // Wait 1 second after the last change before saving
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [achievements, isSavingAchievements]);
+
+  const calculateWeeklyTokens = (verifiedNews) => {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    
+    return verifiedNews.reduce((total, news) => {
+      const verificationDate = new Date(news.verifiedAt);
+      if (verificationDate >= oneWeekAgo) {
+        return total + 15; // Each verification earns 15 tokens
+      }
+      return total;
+    }, 0);
   };
 
   if (loading) {
@@ -555,13 +672,14 @@ export default function Dashboard() {
                       )}
                       <button 
                         onClick={() => handleVerify(news.id)}
+                        disabled={verifiedNewsIds.has(news.id)}
                         className={`inline-flex items-center px-3 py-1 rounded-lg border text-sm hover:bg-gray-50 ${
-                          news.userVerified 
-                            ? 'border-green-500 bg-green-50 text-green-700' 
+                          verifiedNewsIds.has(news.id) 
+                            ? 'border-green-500 bg-green-50 text-green-700 cursor-not-allowed' 
                             : 'border-gray-300 text-gray-700'
                         }`}
                       >
-                        {news.userVerified ? (
+                        {verifiedNewsIds.has(news.id) ? (
                           'Verified'
                         ) : (
                           <>
@@ -642,50 +760,7 @@ export default function Dashboard() {
 
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <ProfileDashboard userData={user} />
-
-          {/* Achievements Section */}
-          <div className="bg-white shadow-sm rounded-lg overflow-hidden mt-6">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">Achievements</h2>
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-600">Total Progress:</span>
-                  <span className="text-sm font-semibold text-cyan-600">
-                    {Math.round(achievements.reduce((acc, curr) => acc + curr.progress, 0) / achievements.length)}%
-                  </span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {achievements.map((achievement, index) => (
-                  <div key={index} className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-1">{achievement.title}</h3>
-                        <p className="text-sm text-gray-600 mb-3">{achievement.description}</p>
-                        {achievement.title === '10 Streak' && (
-                          <p className="text-sm text-cyan-600 mb-3">Current Streak: {achievement.streak} days</p>
-                        )}
-                      </div>
-                      <div className={`rounded-full p-1 ${achievement.completed ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'}`}>
-                        {achievement.completed ? <FiCheck className="w-5 h-5" /> : <FiX className="w-5 h-5" />}
-                      </div>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div 
-                        className={`h-2 rounded-full ${achievement.completed ? 'bg-green-500' : 'bg-cyan-500'}`}
-                        style={{ width: `${achievement.progress}%` }}
-                      />
-                    </div>
-                    <div className="mt-2 text-sm text-gray-600 text-right">
-                      {achievement.progress}% Complete
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <ProfileDashboard userData={{...user, weeklyTokens}} />
         </div>
       </main>
     </div>

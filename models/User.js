@@ -111,6 +111,12 @@ const userSchema = new mongoose.Schema({
   }],
   achievements: [achievementSchema],
   recentVerifications: [verificationSchema],
+  verifiedNews: [{
+    newsId: Number,
+    verifiedAt: { type: Date, default: Date.now },
+    isCorrect: Boolean,
+    category: String
+  }],
   totalEarned: {
     type: Number,
     default: 0
