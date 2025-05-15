@@ -17,12 +17,12 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <a href="/" className="cursor-pointer hover:opacity-90 transition-opacity">
+            <Link href="/" className="cursor-pointer hover:opacity-90 transition-opacity">
               <Logo variant="text" theme="light" size="normal" />
-            </a>
+            </Link>
           </div>
           <div className="flex items-center space-x-4">
-            <a 
+            <Link 
               href="/news-feed"
               className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium cursor-pointer ${
                 router.pathname === '/news-feed'
@@ -32,9 +32,9 @@ export default function Header() {
             >
               <FiRss className="w-5 h-5 mr-2" />
               Your Feed
-            </a>
+            </Link>
 
-            <a 
+            <Link 
               href="/about"
               className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium cursor-pointer ${
                 router.pathname === '/about'
@@ -44,9 +44,9 @@ export default function Header() {
             >
               <FiInfo className="w-5 h-5 mr-2" />
               About
-            </a>
+            </Link>
 
-            <a 
+            <Link 
               href="/profile"
               className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium cursor-pointer ${
                 router.pathname === '/profile'
@@ -56,7 +56,7 @@ export default function Header() {
             >
               <FiUser className="w-5 h-5 mr-2" />
               Profile
-            </a>
+            </Link>
 
             <div className="wallet-adapter-button-trigger">
               <WalletMultiButton />
