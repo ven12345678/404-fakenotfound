@@ -3,6 +3,9 @@
 *A platform to guarantee that only genuine, community-verified news influences the markets.*
 Powered by **AI**, anchored in **transparency**, and protected by **decentralized consensus**.
 
+<img width="669" alt="404" src="https://github.com/user-attachments/assets/a90b5a4e-dccb-48d6-a453-915d9e55d58b" />
+
+
 ---
 
 ## 💡 How We Came Up With the Idea
