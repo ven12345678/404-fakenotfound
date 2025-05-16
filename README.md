@@ -66,10 +66,15 @@ That question led to **404-fake not found**.
 
 ---
 
+## 🏗️ System Architecture Overview
+
+![architecture](https://github.com/user-attachments/assets/32ce622a-a818-48e7-ba1a-2d6953c1742a)
+
+---
+
 ## 💹 Tokenomics
 
-<img width="970" alt="Screenshot 2025-05-16 at 11 27 16 am" src="https://github.com/user-attachments/assets/b95ae102-2c36-4e25-bb9f-0b40e5b9f5f5" />
-
+<img width="939" alt="tokenomics" src="https://github.com/user-attachments/assets/573d37da-9113-4d9e-b8f9-57f3d20eba04" />
 
 ---
 
